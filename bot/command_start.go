@@ -13,10 +13,7 @@ func commandStart(c telebot.Context) error {
 		loge(err)
 	}
 
-	if p == "" {
-		ab := getAppButton()
-		b.Send(c.Sender(), lStart, ab)
-	} else if p == "restart" {
+	if p == "restart" {
 		rb := getRestartButtons(c)
 		if time.Since(u.MiningTime).Minutes() > 1410 {
 			u.MiningTime = time.Now()
@@ -28,6 +25,9 @@ func commandStart(c telebot.Context) error {
 		} else {
 			b.Send(c.Sender(), lCycleRunning, rb)
 		}
+	} else {
+		ab := getAppButton()
+		b.Send(c.Sender(), lStart, ab)
 	}
 
 	return nil
