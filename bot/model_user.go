@@ -176,7 +176,7 @@ func (u *User) processTmuPayments() bool {
 			if err := db.Save(r).Error; err != nil {
 				loge(err)
 			}
-			notify(fmt.Sprintf(lNewRefTmu, float64((new*25/100))/float64(Mul9)), r.TelegramId)
+			notify(fmt.Sprintf(lNewRefFCS, float64((new*25/100))/float64(Mul9)), r.TelegramId)
 		}
 
 		notify(fmt.Sprintf(lNewMint, float64(new)/float64(Mul9)), GroupHall)

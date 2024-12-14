@@ -21,7 +21,7 @@ func viewCompound(ctx *macaron.Context) {
 			if err := db.Save(r).Error; err != nil {
 				loge(err)
 			}
-			msg := fmt.Sprintf(lNewRefTmu, float64(2500000)/float64(Mul9))
+			msg := fmt.Sprintf(lNewRefFCS, float64(2500000)/float64(Mul9))
 			notify(msg, r.TelegramId)
 
 			u.ReferralActive = true
