@@ -99,11 +99,13 @@ func send(amount int64, to string, seed string) {
 	cfg, err := liteclient.GetConfigFromUrl(context.Background(), getTonConfig())
 	if err != nil {
 		loge(err)
+		return
 	}
 
 	err = client.AddConnectionsFromConfig(context.Background(), cfg)
 	if err != nil {
 		loge(err)
+		return
 	}
 
 	api := ton.NewAPIClient(client, ton.ProofCheckPolicyFast).WithRetry()
@@ -116,6 +118,7 @@ func send(amount int64, to string, seed string) {
 	w, err := wallet.FromSeed(api, words, wallet.V4R2)
 	if err != nil {
 		loge(err)
+		return
 	}
 
 	log.Println("wallet address:", w.WalletAddress())
@@ -123,11 +126,13 @@ func send(amount int64, to string, seed string) {
 	block, err := api.CurrentMasterchainInfo(context.Background())
 	if err != nil {
 		loge(err)
+		return
 	}
 
 	balance, err := w.GetBalance(ctx, block)
 	if err != nil {
 		loge(err)
+		return
 	}
 
 	if balance.Nano().Uint64() >= 3000000 {
@@ -155,6 +160,7 @@ func send(amount int64, to string, seed string) {
 		}, true)
 		if err != nil {
 			loge(err)
+			return
 		}
 
 	}

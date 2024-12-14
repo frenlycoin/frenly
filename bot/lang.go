@@ -41,4 +41,10 @@ Current price of 1 FCS (Frenly Coin Share) is 0.1 TON. In 3 days it will be 0.25
 <b><u>Remember that this is an opportunity to do a compound too.</u></b>
 
 Restart mining by clicking the button bellow and then button on the channel once again. 🚀`
+
+	lCycleRunning = "Mining is already active, wait for the notification to restart."
+
+	lCycleRestarted = "You have successfully restarted your mining cycle. 🚀"
+
+	lCompounded = "Reward compounding done successfully. 🚀"
 )
