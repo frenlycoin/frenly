@@ -30,7 +30,7 @@ func commandCompound(c telebot.Context) error {
 		}
 	}
 
-	rb := getRestartButtons()
+	rb := getRestartButtons(c)
 
 	b.Send(c.Sender(), lCompounded, rb)
 
