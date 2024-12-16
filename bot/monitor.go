@@ -81,20 +81,10 @@ func (m *Monitor) minerExists(telId int64) bool {
 }
 
 func (m *Monitor) start() {
-	// m.loadMiners()
-
-	// total := 0
-
-	// for _, mnr := range m.Miners {
-	// 	total += int(mnr.MinedTelegram)
-	// }
-
-	// log.Printf("Total Telegram: %d", total)
-
 	for {
 		m.loadMiners()
 
-		// m.sendNotifications()
+		m.sendNotifications()
 
 		time.Sleep(time.Second * MonitorTick)
 	}
