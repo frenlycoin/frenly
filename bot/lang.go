@@ -15,7 +15,7 @@ const (
 
 <b>Miners:</b> <code>%d</code>
 <b>Active Miners:</b> <code>%d</code>
-<b>FCS:</b> <code>%.9f</code>
+<b>Staked FCS:</b> <code>%.9f</code>
 <b>Reward FCS:</b> <code>%.9f</code>`
 
 	lRanks = "🔵 <b><u>Frenly App Rankings</u></b>\n"
