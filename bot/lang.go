@@ -40,11 +40,15 @@ Start mining TON today!`
 
 Restart mining by clicking the button bellow and then button on the channel once again. 🚀`
 
-	lCycleRunning = "Mining is already active, wait for the notification to restart."
+	lCycleRunning = `🔵 <b><u>Mining Already Active!</u></b>
+
+Mining is already active, please wait for the notification to restart.`
 
 	lCycleRestarted = `🔵 <b><u>Mining Restarted!</u></b> 🚀
 
 You have successfully restarted your Frenly App mining cycle. Use this opportunity to compound reward!`
 
-	lCompounded = "Reward compounding done successfully. 🚀"
+	lCompounded = `🔵 <b><u>Compound Successful!</u></b> 🚀
+
+You have successfully compounded your FCS reward, it has been added to your staked balance..`
 )

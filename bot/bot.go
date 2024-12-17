@@ -52,7 +52,7 @@ func Start() {
 	// 	log.Printf("%d Not: %s", counter, u.Name)
 	// }
 
-	notifytest(lRestartMining, News)
+	// notifytest(lRestartMining, News)
 
 	// notifystart(lStartMining, News)
 
