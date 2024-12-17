@@ -35,10 +35,11 @@ func commandStart(c telebot.Context) error {
 
 func getAppButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("⚪️ Launch Frenly App", "https://t.me/FrenlyRobot/miner")
+	btn1 := rm.URL("Subscribe", "https://t.me/FrenlyNews")
+	btn2 := rm.URL("Start Mining", "https://t.me/FrenlyRobot/miner")
 
 	rm.Inline(
-		rm.Row(btn),
+		rm.Row(btn1, btn2),
 	)
 
 	return rm

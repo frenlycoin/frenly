@@ -1,7 +1,7 @@
 package bot
 
 const (
-	lStart = "🔵 <b><u>Welcome to Frenly App!</u></b>\n\nClick the button bellow or the one in bottom left corner to start the app."
+	lStart = "🔵 <b><u>Welcome to Frenly App!</u></b>\n\nTo start mining TON, first subscribe to our channel and then click \"Start Mining\" button bellow!"
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 
@@ -20,7 +20,7 @@ const (
 
 	lRanks = "🔵 <b><u>Frenly App Rankings</u></b>\n"
 
-	lRestartMining = `Mine More TON! 🚀
+	lRestartMining = `🔵 <b><u>Mine More TON!</u></b> 🚀
 
 <b><u>Each referred miner increases your mining power by 25% of their FCS!</u></b>
 
@@ -28,13 +28,11 @@ Invite your friends to Frenly App and you will receive 25% of their FCS. You can
 
 Click the button bellow to restart the mining cycle!`
 
-	lStartMining = `<b><u>Start Mining TON</u></b> 🚀
+	lStartMining = `🔵 <b><u>Start Mining TON!</u></b> 🚀
 
-Current price of 1 FCS (Frenly Coin Share) is 0.1 TON. In 3 days it will be 0.25 TON and in few months 1 TON.
+Frenly App is an app friendly to Anote. Click the button bellow and start mining TON in just a few simple steps.
 
-<b><u>Start mining TON by clicking the button bellow and receive 0.01 FCS for free!</u></b>
-
-<u>This is the magic of compound interest.</u> If you receive 0.01 FCS and compound daily, after one year you will have 0.38 FCS. After two years, you will have 14.27 FCS, after three years, you will have 539.39 FCS and after five years 770029.12 FCS.`
+Start mining TON today!`
 
 	lCycleFinished = `Your daily mining cycle has ended. Please run it again to continue mining!
 
@@ -44,7 +42,9 @@ Restart mining by clicking the button bellow and then button on the channel once
 
 	lCycleRunning = "Mining is already active, wait for the notification to restart."
 
-	lCycleRestarted = "You have successfully restarted your mining cycle. 🚀"
+	lCycleRestarted = `🔵 <b><u>Mining Restarted!</u></b> 🚀
+
+You have successfully restarted your Frenly App mining cycle. Use this opportunity to compound reward!`
 
 	lCompounded = "Reward compounding done successfully. 🚀"
 )

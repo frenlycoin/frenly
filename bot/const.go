@@ -11,9 +11,9 @@ const (
 
 	GroupHall = int64(-1002405271136)
 
-	Board = int64(-1001717915246)
+	News = int64(-1001717915246)
 
-	BoardDev = int64(-1002261097117)
+	NewsDev = int64(-1002261097117)
 
 	AddressReward = "UQBUli6jlzab570r5LK2zFPejtdATwmFB3FofriHxmLYZphf"
 

@@ -32,5 +32,5 @@ func getCallerInfo() (info string) {
 	}
 	// funcName := runtime.FuncForPC(pc).Name()
 	fileName := path.Base(file) // The Base function returns the last element of the path
-	return fmt.Sprintf("%s:%d: ", fileName, lineNo)
+	return fmt.Sprintf("frenly: %s:%d: ", fileName, lineNo)
 }

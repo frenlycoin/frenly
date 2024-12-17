@@ -52,7 +52,9 @@ func Start() {
 	// 	log.Printf("%d Not: %s", counter, u.Name)
 	// }
 
-	// notifytest(lRestartMining, BoardDev)
+	notifytest(lRestartMining, News)
+
+	// notifystart(lStartMining, News)
 
 	// u := getUser(7967928871)
 	// log.Println(u.processTmuPayments())

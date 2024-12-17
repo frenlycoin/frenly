@@ -38,7 +38,7 @@ func notifytest(msg string, tgid int64) {
 	rec := &telebot.Chat{
 		ID: tgid,
 	}
-	b.Send(rec, msg, mb, telebot.NoPreview, telebot.Silent)
+	b.Send(rec, msg, mb, telebot.Silent)
 }
 
 func notifystart(msg string, tgid int64) {
@@ -76,7 +76,7 @@ func getRestartButton() *telebot.ReplyMarkup {
 
 func getStartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("⚪️ Start Mining TON", "https://t.me/FrenlyRobot/miner")
+	btn := rm.URL("Start Mining TON Now 🚀", "t.me/FrenlyRobot")
 
 	rm.Inline(
 		rm.Row(btn),
