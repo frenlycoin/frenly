@@ -16,7 +16,6 @@ func (m *Monitor) loadMiners() {
 
 func (m *Monitor) sendNotifications() {
 	// counter := 1
-	log.Printf("Num Miners: %d", len(m.Miners))
 	for _, miner := range m.Miners {
 		if m.isSending(miner) {
 			notifyEnd(miner.TelegramId)
