@@ -17,14 +17,16 @@ func viewData(ctx *macaron.Context) {
 	if tgid != 0 {
 		u, err := getUserOrCreate2(tgid, code, name)
 		if err == nil {
-			r = getUserByCode(ref)
+			if ref != "undefined" {
+				r = getUserByCode(ref)
 
-			if u.ReferrerID == nil && r.ID != u.ID && r.ID != 0 {
-				u.ReferrerID = &r.ID
-				if err := db.Save(u).Error; err != nil {
-					loge(err)
+				if u.ReferrerID == nil && r.ID != u.ID && r.ID != 0 {
+					u.ReferrerID = &r.ID
+					if err := db.Save(u).Error; err != nil {
+						loge(err)
+					}
+					notify(lNewRef, r.TelegramId)
 				}
-				notify(lNewRef, r.TelegramId)
 			}
 
 			if time.Since(u.MiningTime).Minutes() <= 1410 {

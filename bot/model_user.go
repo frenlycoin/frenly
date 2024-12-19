@@ -197,7 +197,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 		code = generateCode()
 	}
 
-	if res := db.Where(&User{TelegramId: c.Sender().ID}).Attrs(
+	res := db.Where(&User{TelegramId: c.Sender().ID}).Attrs(
 		&User{
 			TMU:              10000000,
 			Code:             code,
@@ -207,14 +207,16 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 			LastNotification: time.Now(),
 			MiningTime:       time.Now(),
 			Name:             c.Sender().FirstName,
-		}).FirstOrCreate(u); res.Error != nil {
+		}).FirstOrCreate(u)
 
+	if res.Error != nil {
 		loge(res.Error)
 		return u, res.Error
+	} else if res.RowsAffected > 0 {
+		notify(lNewUser, Group)
 	}
 
 	if u.AddressDeposit == u.Code {
-		notify(lNewUser, Group)
 
 		cch.loadStatsCache()
 
@@ -232,7 +234,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 
 	p := c.Message().Payload
 
-	if u.ReferrerID == nil && len(p) > 0 {
+	if u.ReferrerID == nil && len(p) > 0 && p != "undefined" {
 		r := getUserByCode(p)
 		if r.ID != 0 && r.ID != u.ID {
 			u.ReferrerID = &r.ID
@@ -253,7 +255,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 		code = generateCode()
 	}
 
-	if res := db.Preload("Referrer").Where(&User{TelegramId: tgid}).Attrs(
+	res := db.Preload("Referrer").Where(&User{TelegramId: tgid}).Attrs(
 		&User{
 			TMU:              10000000,
 			Code:             code,
@@ -263,10 +265,13 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 			LastNotification: time.Now(),
 			MiningTime:       time.Now(),
 			Name:             name,
-		}).FirstOrCreate(u); res.Error != nil {
+		}).FirstOrCreate(u)
 
+	if res.Error != nil {
 		loge(res.Error)
 		return u, res.Error
+	} else if res.RowsAffected > 0 {
+		notify(lNewUser, Group)
 	}
 
 	if u.AddressDeposit == u.Code {
@@ -282,7 +287,6 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 				return u, err
 			}
 		}
-		notify(lNewUser, Group)
 
 		cch.loadStatsCache()
 	}
