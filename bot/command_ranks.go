@@ -19,10 +19,10 @@ func commandRanks(c telebot.Context) error {
 			if user.TelegramId == u.TelegramId {
 				showCaller = false
 				tmu := float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f TMU (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f FCS (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
 			} else {
 				tmu := float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f TMU (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FCS (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
 			}
 		}
 	}
@@ -38,19 +38,19 @@ func commandRanks(c telebot.Context) error {
 					u = users[i-1]
 
 					tmu = float64(u.TMU) / float64(Mul9)
-					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f TMU (%d)</code>", i, u.Name, tmu, u.CompoundCount)
+					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FCS (%d)</code>", i, u.Name, tmu, u.CompoundCount)
 				}
 
 				u = users[i]
 
 				tmu = float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f TMU (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f FCS (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
 
 				if i < len(users) {
 					u = users[i+1]
 
 					tmu = float64(u.TMU) / float64(Mul9)
-					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f TMU (%d)</code>", i+2, u.Name, tmu, u.CompoundCount)
+					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FCS (%d)</code>", i+2, u.Name, tmu, u.CompoundCount)
 				}
 			}
 		}
