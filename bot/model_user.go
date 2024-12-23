@@ -215,12 +215,10 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
 		notify(lNewUser, Group)
+		cch.loadStatsCache()
 	}
 
 	if u.AddressDeposit == u.Code {
-
-		cch.loadStatsCache()
-
 		s, a, err := generateSeedAddress()
 		if err != nil {
 			return u, err
@@ -273,6 +271,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
 		notify(lNewUser, Group)
+		cch.loadStatsCache()
 	}
 
 	if u.AddressDeposit == u.Code {
@@ -288,8 +287,6 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 				return u, err
 			}
 		}
-
-		cch.loadStatsCache()
 	}
 
 	return u, nil
