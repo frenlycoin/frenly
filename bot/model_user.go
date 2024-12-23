@@ -31,6 +31,7 @@ type User struct {
 	LastNotification time.Time `gorm:"default:'2024-12-03 16:00:00.390330053+01:00'"`
 	LastTxLT         uint64    `gorm:"default:0"`
 	LastTxHash       string    `gorm:"default:''"`
+	BotBlocked       bool      `gorm:"default:false"`
 }
 
 func (u *User) rewards() uint64 {

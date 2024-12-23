@@ -2,6 +2,7 @@ package bot
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"gopkg.in/telebot.v3"
@@ -94,6 +95,14 @@ func notifyEnd(tgid int64) {
 
 	_, err := b.Send(rec, lCycleFinished, rb, telebot.NoPreview)
 	if err != nil {
-		loge(err)
+		if strings.Contains(err.Error(), "blocked") {
+			u := getUser(tgid)
+			u.BotBlocked = true
+			if err := db.Save(u).Error; err != nil {
+				loge(err)
+			}
+		} else {
+			loge(err)
+		}
 	}
 }
