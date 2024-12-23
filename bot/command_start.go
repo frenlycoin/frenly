@@ -17,6 +17,7 @@ func commandStart(c telebot.Context) error {
 		rb := getRestartButtons(c)
 		if time.Since(u.MiningTime).Minutes() > 1410 {
 			u.MiningTime = time.Now()
+			u.LastNotification = time.Now()
 			u.CycleCount++
 			if err := db.Save(u).Error; err != nil {
 				loge(err)
