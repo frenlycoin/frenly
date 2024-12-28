@@ -21,7 +21,8 @@ const (
 
 	DevTonConfig = "https://ton.org/testnet-global.config.json"
 
-	TonConfig = "https://ton.org/global.config.json"
+	// TonConfig = "https://ton.org/global.config.json"
+	TonConfig = "https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/refs/heads/main/global.config.json"
 
 	// MonitorTick interval in seconds
 	MonitorTick = 60

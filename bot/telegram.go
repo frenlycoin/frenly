@@ -77,7 +77,7 @@ func getRestartButton() *telebot.ReplyMarkup {
 
 func getStartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("Start Mining TON Now 🚀", "t.me/FrenlyRobot")
+	btn := rm.URL("Start Mining Now 🚀", "t.me/FrenlyRobot")
 
 	rm.Inline(
 		rm.Row(btn),

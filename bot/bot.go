@@ -54,7 +54,7 @@ func Start() {
 
 	// notifytest(lRestartMining, News)
 
-	// notifystart(lStartMining, News)
+	// notifystart(lAd1, NewsDev)
 
 	// u := getUser(7967928871)
 	// log.Println(u.processTmuPayments())

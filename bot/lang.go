@@ -51,4 +51,10 @@ You have successfully restarted your Frenly App mining cycle. Use this opportuni
 	lCompounded = `🔵 <b><u>Compound Successful!</u></b> 🚀
 
 You have successfully compounded your FCS reward, it has been added to your staked balance..`
+
+	lAd1 = `🔵 <b><u>Start Mining Frenly Coin!</u></b> 🚀
+	
+Frenly Coin (FRCO) is a meme coin of the newest generation. In first phase, we mine it with mobile app, in the second phase, we launch a token of our own, in third phase, we launch a blockchain of our own with nodes on desktop and laptop computers.
+
+Join us today!`
 )
