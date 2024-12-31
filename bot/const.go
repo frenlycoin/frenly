@@ -25,5 +25,8 @@ const (
 	TonConfig = "https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/refs/heads/main/global.config.json"
 
 	// MonitorTick interval in seconds
-	MonitorTick = 60
+	MonitorTick = 10
+
+	// CacheTick interval in seconds
+	CacheTick = 10
 )
