@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"log"
 	"time"
 )
 
@@ -35,7 +34,7 @@ func (c *Cache) start() {
 	for {
 		c.loadStatsCache()
 
-		log.Println("Cache loaded.")
+		// log.Println("Cache loaded.")
 
 		time.Sleep(time.Second * CacheTick)
 	}

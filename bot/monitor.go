@@ -85,7 +85,7 @@ func (m *Monitor) start() {
 
 		m.sendNotifications()
 
-		log.Println("Monitor users loaded.")
+		// log.Println("Monitor users loaded.")
 
 		time.Sleep(time.Second * MonitorTick)
 	}
