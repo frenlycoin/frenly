@@ -1,2 +1,3 @@
 stats - Frenly App system stats.
 ranks - Frenly App user rankings.
+check - Check user's mining status.
