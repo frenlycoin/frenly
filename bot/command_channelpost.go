@@ -8,8 +8,10 @@ func commandChannelPost(c telebot.Context) error {
 	var err error
 	// fb := getFrenlyButton()
 
+	// log.Println(c.Message().ID)
+
 	// msg := c.Message()
-	// msg, err = b.Edit(msg, fb)
+	// _, err = b.Edit(msg, fb)
 	// if err != nil {
 	// 	loge(err)
 	// }
