@@ -21,7 +21,7 @@ func commandCheck(c telebot.Context) error {
 			if miner.isActive() {
 				message = "This user is currently mining. 🚀"
 			} else {
-				message = fmt.Sprintf("This user is not mining currently, but has mined %d hours and %d minutes ago.\n\nTo continue mining, click the button bellow.", int64(diff.Hours()), int64(diff.Minutes())%int64(diff.Hours()))
+				message = fmt.Sprintf("This user is not mining currently, but has mined %d hours and %d minutes ago.\n\nTo continue mining, click the button bellow.", int64(diff.Hours()), int64(diff.Minutes())%60)
 				btn = getRestartButton()
 			}
 		} else {
@@ -36,7 +36,7 @@ func commandCheck(c telebot.Context) error {
 			if miner.isActive() {
 				message = "You are currently mining. 🚀"
 			} else {
-				message = fmt.Sprintf("You are not mining currently, but you have mined %d hours and %d minutes ago.\n\nTo continue mining, click the button bellow.", int64(diff.Hours()), int64(diff.Minutes())%int64(diff.Hours()))
+				message = fmt.Sprintf("You are not mining currently, but you have mined %d hours and %d minutes ago.\n\nTo continue mining, click the button bellow.", int64(diff.Hours()), int64(diff.Minutes())%60)
 				btn = getRestartButton()
 			}
 		} else {
@@ -45,7 +45,11 @@ func commandCheck(c telebot.Context) error {
 		}
 	}
 
-	_, err = b.Send(c.Chat(), message, btn, telebot.NoPreview)
+	if btn != nil {
+		_, err = b.Send(c.Chat(), message, btn, telebot.NoPreview)
+	} else {
+		_, err = b.Send(c.Chat(), message, telebot.NoPreview)
+	}
 
 	return err
 }
