@@ -27,6 +27,8 @@ func init() {
 
 	cch = initCache()
 
+	initPrizeManager()
+
 	initMacaron()
 }
 
@@ -58,6 +60,8 @@ func Start() {
 
 	// u := getUser(7967928871)
 	// log.Println(u.processTmuPayments())
+
+	notify(lNotWon, Admin)
 
 	b.Start()
 }

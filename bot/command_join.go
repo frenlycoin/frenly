@@ -12,8 +12,15 @@ func commandJoin(c telebot.Context) error {
 
 	msg := fmt.Sprintf(`<b><u>Welcome, %s!</u></b>
 
-You can read more about Frenly App here:
+Here are some resources to get you started.
 
+Short Explanation:
+https://t.me/FrenlyNews/105
+
+Mining Tutorial:
+https://t.me/FrenlyNews/106
+
+About Frenly App:
 https://t.me/FrenlyNews/8`, c.Message().Sender.FirstName)
 
 	m, err := b.Send(c.Chat(), msg, telebot.NoPreview)

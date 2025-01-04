@@ -6,7 +6,6 @@ import (
 
 func commandChannelPost(c telebot.Context) error {
 	var err error
-	// fb := getFrenlyButton()
 
 	// log.Println(c.Message().ID)
 

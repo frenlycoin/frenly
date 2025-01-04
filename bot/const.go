@@ -29,4 +29,7 @@ const (
 
 	// CacheTick interval in seconds
 	CacheTick = 10
+
+	// PrizeTick interval in seconds
+	PrizeTick = 60
 )

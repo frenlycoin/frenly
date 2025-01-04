@@ -57,4 +57,12 @@ You have successfully compounded your FCS reward, it has been added to your stak
 Frenly Coin (FRCO) is a meme coin of the newest generation. In first phase, we mine it with mobile app, in the second phase, we launch a token of our own, in third phase, we launch a blockchain of our own with nodes on desktop and laptop computers.
 
 Join us today!`
+
+	lNotWon = `<b><u>Please notice!</u></b>
+
+You were randomly chosen as Frenly App TON prize winner in our daily contest, but you weren't actively mining so the prize went to other active miner.
+
+To prevent this from happening again, make sure to restart your miner every day.
+
+If you need any help, join @FrenlyCoin group.`
 )
