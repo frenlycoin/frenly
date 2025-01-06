@@ -15,6 +15,8 @@ var db *gorm.DB
 
 var cch *Cache
 
+var mon *Monitor
+
 // Package init function
 func init() {
 	conf = initConfig()
@@ -23,7 +25,7 @@ func init() {
 
 	b = initTelegram(conf.TelegramKey)
 
-	initMonitor()
+	mon = initMonitor()
 
 	cch = initCache()
 
@@ -61,7 +63,7 @@ func Start() {
 	// u := getUser(7967928871)
 	// log.Println(u.processTmuPayments())
 
-	notify(lNotWon, Admin)
+	// notify(lNotWon, Admin)
 
 	b.Start()
 }
