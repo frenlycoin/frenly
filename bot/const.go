@@ -15,6 +15,8 @@ const (
 
 	NewsDev = int64(-1002261097117)
 
+	Nigeria = int64(-1002363803910)
+
 	AddressReward = "UQBUli6jlzab570r5LK2zFPejtdATwmFB3FofriHxmLYZphf"
 
 	AddressTonAd = "UQALCxTkDbNMwLV29fgV0ZzEI9YOgREnFg94Q70OSnRPNhf-"

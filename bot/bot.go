@@ -61,7 +61,9 @@ func Start() {
 	// notifystart(lAd1, NewsDev)
 
 	// u := getUser(7967928871)
-	// log.Println(u.processTmuPayments())
+	// log.Println(prettyPrint(u))
+
+	// notifyPrize(u)
 
 	// notify(lNotWon, Admin)
 

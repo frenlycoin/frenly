@@ -9,7 +9,7 @@ const (
 
 	lNewUser = "<b><u>New Frenly App user.</u></b> 🚀"
 
-	lNewMint = "<b><u>New FCS mint:</u> <code>%.9f FCS</code></b> 🚀"
+	lNewMint = "<b><u>New FCS mint:</u> <code>%.9f FCS (%s)</code></b> 🚀"
 
 	lStats = `🔵 <b><u>Frenly App Basic Stats</u></b>
 
@@ -65,4 +65,30 @@ You were randomly chosen as Frenly App TON prize winner in our daily contest, bu
 To prevent this from happening again, make sure to restart your miner every day.
 
 If you need any help, join @FrenlyCoin group.`
+
+	lWonPrize = `<b><u>Daily TON Prize Winner!</u></b> 🚀
+	
+We have the daily TON prize winner and it is user:
+
+%s
+
+To claim the reward, click the button bellow and then claim in the group.
+
+Congratulations!
+
+To rest of active miners, better luck tomorrow and happy mining! ❤️`
+
+	lClaimPrize = `Dear %s,
+
+click the button bellow to claim the prize! 🚀`
+
+	lClaimSuccess = `<b><u>Claim Success</u></b> 🚀
+	
+%s, you have successfully claimed your daily claim prize.`
+
+	lClaimFail = `Sorry %s, you are not the winner, only winner can claim the reward.`
+
+	lClaimError = `%s, your withdraw address isn't configured. Please open the app, click the settings in the menu and save your TON address there.
+	
+After that, try claiming reward again.`
 )

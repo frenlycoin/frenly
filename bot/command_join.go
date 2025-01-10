@@ -26,7 +26,7 @@ https://t.me/FrenlyNews/8`, c.Message().Sender.FirstName)
 	m, err := b.Send(c.Chat(), msg, telebot.NoPreview)
 
 	go func(m *telebot.Message) {
-		time.Sleep(time.Second * 120)
+		time.Sleep(time.Second * 300)
 		err := b.Delete(m)
 		if err != nil {
 			loge(err)

@@ -158,7 +158,7 @@ func (u *User) processTmuPayments() bool {
 	// checkNewTmu(u)
 
 	if new >= 50000000 {
-		new *= 10
+		new *= 5
 		u.TMU += new
 		now := time.Now()
 		u.TimeLock = &now
@@ -180,7 +180,7 @@ func (u *User) processTmuPayments() bool {
 			notify(fmt.Sprintf(lNewRefFCS, float64((new*25/100))/float64(Mul9)), r.TelegramId)
 		}
 
-		notify(fmt.Sprintf(lNewMint, float64(new)/float64(Mul9)), GroupHall)
+		notify(fmt.Sprintf(lNewMint, float64(new)/float64(Mul9), u.Name), GroupHall)
 
 		go splitPayment(u)
 

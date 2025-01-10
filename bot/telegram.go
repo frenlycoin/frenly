@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -101,6 +102,32 @@ func getFrenlyButton() *telebot.ReplyMarkup {
 	return rm
 }
 
+func getClaimButton() *telebot.ReplyMarkup {
+	rm := &telebot.ReplyMarkup{}
+	btn := rm.Data("Claim The Reward 🚀", "claim")
+
+	rm.Inline(
+		rm.Row(btn),
+	)
+
+	b.Handle(&btn, commandClaim)
+
+	return rm
+}
+
+func getGroupButton(link string) *telebot.ReplyMarkup {
+	rm := &telebot.ReplyMarkup{}
+	btn := rm.URL("Claim In Group", link)
+
+	rm.Inline(
+		rm.Row(btn),
+	)
+
+	b.Handle(&btn, commandClaim)
+
+	return rm
+}
+
 func notifyEnd(tgid int64) {
 	rb := getRestartButton()
 
@@ -119,5 +146,39 @@ func notifyEnd(tgid int64) {
 		} else {
 			loge(err)
 		}
+	}
+}
+
+func notifyPrize(u *User) {
+	cb := getClaimButton()
+	msg := fmt.Sprintf(lWonPrize, u.Name)
+
+	rec := &telebot.Chat{
+		ID: NewsDev,
+	}
+
+	recGroup := &telebot.Chat{
+		ID: Nigeria,
+	}
+
+	mc, err := b.Send(rec, msg, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+
+	time.Sleep(time.Second * 5)
+
+	claimMsg := fmt.Sprintf(lClaimPrize, u.Name)
+
+	mg, err := b.Send(recGroup, claimMsg, cb, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+
+	gb := getGroupButton(fmt.Sprintf("https://t.me/FrenlyCoin/%d", mg.ID))
+
+	_, err = b.Edit(mc, gb)
+	if err != nil {
+		loge(err)
 	}
 }
