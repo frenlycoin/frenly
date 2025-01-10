@@ -19,10 +19,11 @@ func commandClaim(c telebot.Context) error {
 	if u.ID == uint(kv.ValueInt) {
 		if u.AddressWithdraw != u.Code {
 			msg = fmt.Sprintf(lClaimSuccess, u.Name)
-			send(100000000, u.AddressWithdraw, conf.Seed)
 
 			kv.ValueInt = 0
 			db.Save(kv)
+
+			send(100000000, u.AddressWithdraw, conf.Seed)
 		} else {
 			msg = fmt.Sprintf(lClaimError, u.Name)
 		}

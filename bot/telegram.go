@@ -154,11 +154,11 @@ func notifyPrize(u *User) {
 	msg := fmt.Sprintf(lWonPrize, u.Name)
 
 	rec := &telebot.Chat{
-		ID: NewsDev,
+		ID: News,
 	}
 
 	recGroup := &telebot.Chat{
-		ID: Nigeria,
+		ID: Group,
 	}
 
 	mc, err := b.Send(rec, msg, telebot.NoPreview)
