@@ -21,7 +21,7 @@ func commandCompound(c telebot.Context) error {
 		if err := db.Save(r).Error; err != nil {
 			loge(err)
 		}
-		msg := fmt.Sprintf(lNewRefFCS, float64(2500000)/float64(Mul9))
+		msg := fmt.Sprintf(lNewRefFREN, float64(2500000)/float64(Mul9))
 		notify(msg, r.TelegramId)
 
 		u.ReferralActive = true

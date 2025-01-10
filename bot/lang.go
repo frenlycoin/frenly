@@ -5,26 +5,26 @@ const (
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 
-	lNewRefFCS = "🔵 <b><u>New Referral FCS!</u></b>\n\nYou have received %.9f new referral FCS."
+	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %.9f new referral FREN."
 
 	lNewUser = "<b><u>New Frenly App user.</u></b> 🚀"
 
-	lNewMint = "<b><u>New FCS mint:</u> <code>%.9f FCS (%s)</code></b> 🚀"
+	lNewMint = "<b><u>New FREN mint:</u> <code>%.9f FREN (%s)</code></b> 🚀"
 
 	lStats = `🔵 <b><u>Frenly App Basic Stats</u></b>
 
 <b>Miners:</b> <code>%d</code>
 <b>Active Miners:</b> <code>%d</code>
-<b>Staked FCS:</b> <code>%.9f</code>
-<b>Reward FCS:</b> <code>%.9f</code>`
+<b>Staked FREN:</b> <code>%.9f</code>
+<b>Reward FREN:</b> <code>%.9f</code>`
 
 	lRanks = "🔵 <b><u>Frenly App Rankings</u></b>\n"
 
 	lRestartMining = `🔵 <b><u>Mine More TON!</u></b> 🚀
 
-<b><u>Each referred miner increases your mining power by 25% of their FCS!</u></b>
+<b><u>Each referred miner increases your mining power by 25% of their FREN!</u></b>
 
-Invite your friends to Frenly App and you will receive 25% of their FCS. You can find your referral link in the app.
+Invite your friends to Frenly App and you will receive 25% of their FREN. You can find your referral link in the app.
 
 Click the button bellow to restart the mining cycle!`
 
@@ -50,11 +50,11 @@ You have successfully restarted your Frenly App mining cycle. Use this opportuni
 
 	lCompounded = `🔵 <b><u>Compound Successful!</u></b> 🚀
 
-You have successfully compounded your FCS reward, it has been added to your staked balance..`
+You have successfully compounded your FREN reward, it has been added to your staked balance..`
 
 	lAd1 = `🔵 <b><u>Start Mining Frenly Coin!</u></b> 🚀
 	
-Frenly Coin (FRCO) is a meme coin of the newest generation. In first phase, we mine it with mobile app, in the second phase, we launch a token of our own, in third phase, we launch a blockchain of our own with nodes on desktop and laptop computers.
+Frenly Coin (FRENLY) is a meme coin of the newest generation. In first phase, we mine it with mobile app, in the second phase, we launch a token of our own, in third phase, we launch a blockchain of our own with nodes on desktop and laptop computers.
 
 Join us today!`
 
