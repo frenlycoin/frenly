@@ -18,7 +18,7 @@ func (c *Cache) loadStatsCache() {
 
 	for _, u := range users {
 		tmu += (float64(u.TMU) / float64(Mul9))
-		reward += (float64(u.rewards()) / float64(Mul9))
+		reward += (float64(u.rewards(false)) / float64(Mul9))
 		if u.isActive() {
 			countActive++
 		}

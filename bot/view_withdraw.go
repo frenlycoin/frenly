@@ -13,7 +13,7 @@ func viewWithdraw(ctx *macaron.Context) {
 
 	if tgid != 0 {
 		u := getUser(tgid)
-		amount := int64((u.rewards() / 10) - 5000000)
+		amount := int64((u.rewards(true) / 10) - 5000000)
 		logs(strconv.Itoa(int(amount)))
 		if amount > 0 {
 			send(amount, u.AddressWithdraw, conf.Seed)

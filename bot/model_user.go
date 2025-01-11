@@ -34,10 +34,10 @@ type User struct {
 	BotBlocked       bool      `gorm:"default:false"`
 }
 
-func (u *User) rewards() uint64 {
+func (u *User) rewards(checkFollow bool) uint64 {
 	r := uint64(0)
 
-	if !u.isFollower() {
+	if checkFollow && !u.isFollower() {
 		return r
 	}
 
@@ -56,7 +56,7 @@ func (u *User) rewards() uint64 {
 }
 
 func (u *User) compound() {
-	u.TMU += u.rewards()
+	u.TMU += u.rewards(true)
 	u.CompoundCount++
 	if u.CycleCount > 0 {
 		u.CycleCountTotal += (u.CycleCount - 1)

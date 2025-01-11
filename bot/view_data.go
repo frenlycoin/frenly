@@ -39,7 +39,7 @@ func viewData(ctx *macaron.Context) {
 			dr.AddressDeposit = u.AddressDeposit
 			dr.AddressWithdraw = u.AddressWithdraw
 			dr.TMU = float64(u.TMU) / float64(Mul9)
-			dr.Earnings = float64(u.rewards()) / float64(Mul9)
+			dr.Earnings = float64(u.rewards(true)) / float64(Mul9)
 			dr.LastUpdated = u.LastUpdated
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
