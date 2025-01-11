@@ -79,6 +79,19 @@ func (m *Monitor) minerExists(telId int64) bool {
 	return false
 }
 
+func (m *Monitor) isTriggeringChannelPost() bool {
+	kv := &KeyValue{Key: "lastPostDay"}
+	db.FirstOrCreate(kv, kv)
+
+	if time.Now().Hour() == 15 && time.Now().Minute() == 33 && time.Now().Day() != int(kv.ValueInt) {
+		kv.ValueInt = int64(time.Now().Day())
+		db.Save(kv)
+		return true
+	}
+
+	return false
+}
+
 func (m *Monitor) start() {
 	for {
 		m.loadMiners()
@@ -86,6 +99,10 @@ func (m *Monitor) start() {
 		m.sendNotifications()
 
 		// log.Println("Monitor users loaded.")
+
+		if m.isTriggeringChannelPost() {
+			notifyRestart()
+		}
 
 		time.Sleep(time.Second * MonitorTick)
 	}

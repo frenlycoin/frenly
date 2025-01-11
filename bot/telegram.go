@@ -39,12 +39,24 @@ func notify(msg string, tgid int64) {
 	b.Send(rec, msg, telebot.NoPreview)
 }
 
-func notifytest(msg string, tgid int64) {
-	mb := getMiningButton()
+func notifyRestart() {
+	mb := getRestartButton()
 	rec := &telebot.Chat{
-		ID: tgid,
+		ID: News,
 	}
-	b.Send(rec, msg, mb, telebot.Silent)
+
+	msg := lRestartMining
+
+	m, err := b.Send(rec, msg, mb, telebot.Silent)
+	if err != nil {
+		loge(err)
+	}
+
+	kv := &KeyValue{Key: "restartPostId"}
+	db.FirstOrCreate(kv, kv)
+
+	kv.ValueInt = int64(m.ID)
+	db.Save(kv)
 }
 
 func notifystart(msg string, tgid int64) {
@@ -58,7 +70,7 @@ func notifystart(msg string, tgid int64) {
 	}
 }
 
-func getMiningButton() *telebot.ReplyMarkup {
+func getRestartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 	btn := rm.URL("⚪️ Restart Mining", "https://t.me/FrenlyRobot?start=restart")
 
@@ -69,9 +81,13 @@ func getMiningButton() *telebot.ReplyMarkup {
 	return rm
 }
 
-func getRestartButton() *telebot.ReplyMarkup {
+func getRestartButtonChannel() *telebot.ReplyMarkup {
+	kv := &KeyValue{Key: "restartPostId"}
+	db.FirstOrCreate(kv, kv)
+	link := fmt.Sprintf("https://t.me/FrenlyNews/%d", kv.ValueInt)
+
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("⚪️ Restart Mining", "https://t.me/FrenlyNews/96")
+	btn := rm.URL("⚪️ Restart Mining", link)
 
 	rm.Inline(
 		rm.Row(btn),
@@ -129,7 +145,7 @@ func getGroupButton(link string) *telebot.ReplyMarkup {
 }
 
 func notifyEnd(tgid int64) {
-	rb := getRestartButton()
+	rb := getRestartButtonChannel()
 
 	rec := &telebot.Chat{
 		ID: tgid,

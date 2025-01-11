@@ -56,11 +56,12 @@ func Start() {
 	// 	log.Printf("%d Not: %s", counter, u.Name)
 	// }
 
-	// notifytest(lRestartMining, News)
+	// notifyRestart()
 
 	// notifystart(lAd1, NewsDev)
 
 	// u := getUser(7967928871)
+	// notifyEnd(7967928871)
 	// log.Println(prettyPrint(u))
 
 	// notifyPrize(u)

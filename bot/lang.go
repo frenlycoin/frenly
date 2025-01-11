@@ -26,7 +26,7 @@ const (
 
 Invite your friends to Frenly App and you will receive 25% of their FREN. You can find your referral link in the app.
 
-Click the button bellow to restart the mining cycle!`
+Click the button bellow to restart the daily mining cycle!`
 
 	lStartMining = `🔵 <b><u>Start Mining TON!</u></b> 🚀
 
