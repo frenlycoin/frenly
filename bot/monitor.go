@@ -83,7 +83,7 @@ func (m *Monitor) isTriggeringChannelPost() bool {
 	kv := &KeyValue{Key: "lastPostDay"}
 	db.FirstOrCreate(kv, kv)
 
-	if time.Now().Hour() == 15 && time.Now().Minute() == 33 && time.Now().Day() != int(kv.ValueInt) {
+	if time.Now().Hour() == 15 && time.Now().Day() != int(kv.ValueInt) {
 		kv.ValueInt = int64(time.Now().Day())
 		db.Save(kv)
 		return true
