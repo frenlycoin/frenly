@@ -91,4 +91,6 @@ click the button bellow to claim the prize! 🚀`
 	lClaimError = `%s, your withdraw address isn't configured. Please open the app, click the settings in the menu and save your TON address there.
 	
 After that, try claiming reward again.`
+
+	lBoost = `Click the button bellow to boot your Frenly App miner's health! 🚀`
 )
