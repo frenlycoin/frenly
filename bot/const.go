@@ -34,4 +34,10 @@ const (
 
 	// PrizeTick interval in seconds
 	PrizeTick = 60
+
+	TypePost = 1
+
+	TypeButton = 2
+
+	TypeLink = 3
 )

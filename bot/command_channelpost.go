@@ -7,13 +7,15 @@ import (
 func commandChannelPost(c telebot.Context) error {
 	var err error
 
-	// log.Println(c.Message().ID)
+	getChannelOrCreate(c.Chat().ID, nil)
 
-	// msg := c.Message()
-	// _, err = b.Edit(msg, fb)
-	// if err != nil {
-	// 	loge(err)
-	// }
+	fb := getFrenlyButton()
+
+	msg := c.Message()
+	_, err = b.Edit(msg, fb)
+	if err != nil {
+		loge(err)
+	}
 
 	return err
 }
