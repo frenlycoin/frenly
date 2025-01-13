@@ -107,9 +107,9 @@ func getStartButton() *telebot.ReplyMarkup {
 	return rm
 }
 
-func getFrenlyButton() *telebot.ReplyMarkup {
+func getFrenlyButton(link string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("Boost Frenly Miner 🚀", "https://t.me/FrenlyRobot?start=boost")
+	btn := rm.URL("Boost Frenly Miner 🚀", link)
 
 	rm.Inline(
 		rm.Row(btn),
