@@ -25,3 +25,11 @@ func getPostOrCreate(msgId int, c *Channel) (*Post, error) {
 
 	return p, nil
 }
+
+func getPost(id int) *Post {
+	p := &Post{}
+
+	db.First(p, id)
+
+	return p
+}

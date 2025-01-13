@@ -93,4 +93,6 @@ click the button bellow to claim the prize! 🚀`
 After that, try claiming reward again.`
 
 	lBoost = `Click the button bellow to boot your Frenly App miner's health! 🚀`
+
+	lBoosted = `Miner health boosted successfully! 🚀`
 )
