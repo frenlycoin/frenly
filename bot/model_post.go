@@ -7,6 +7,7 @@ type Post struct {
 	TelegramId int `gorm:"size:255;uniqueIndex"`
 	ChannelId  uint
 	Channel    Channel
+	Boosted    []*User `gorm:"many2many:boosts;"`
 }
 
 func getPostOrCreate(msgId int, c *Channel) (*Post, error) {

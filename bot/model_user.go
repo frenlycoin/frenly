@@ -32,6 +32,7 @@ type User struct {
 	LastTxLT         uint64    `gorm:"default:0"`
 	LastTxHash       string    `gorm:"default:''"`
 	BotBlocked       bool      `gorm:"default:false"`
+	Boosts           []*Post   `gorm:"many2many:boosts;"`
 }
 
 func (u *User) rewards(checkFollow bool) uint64 {

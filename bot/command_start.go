@@ -1,6 +1,8 @@
 package bot
 
 import (
+	"log"
+	"strings"
 	"time"
 
 	"gopkg.in/telebot.v3"
@@ -26,6 +28,10 @@ func commandStart(c telebot.Context) error {
 		} else {
 			b.Send(c.Sender(), lCycleRunning, rb)
 		}
+	} else if p == "claim" {
+		commandClaim(c)
+	} else if strings.HasPrefix(p, "b-") {
+		log.Println(p)
 	} else {
 		ab := getAppButton()
 		b.Send(c.Sender(), lStart, ab)

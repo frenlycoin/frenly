@@ -120,13 +120,11 @@ func getFrenlyButton(link string) *telebot.ReplyMarkup {
 
 func getClaimButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.Data("Claim The Reward 🚀", "claim")
+	btn := rm.URL("Claim The Reward 🚀", "t.me/FrenlyRobot?start=claim")
 
 	rm.Inline(
 		rm.Row(btn),
 	)
-
-	b.Handle(&btn, commandClaim)
 
 	return rm
 }
@@ -138,8 +136,6 @@ func getGroupButton(link string) *telebot.ReplyMarkup {
 	rm.Inline(
 		rm.Row(btn),
 	)
-
-	b.Handle(&btn, commandClaim)
 
 	return rm
 }
