@@ -41,7 +41,7 @@ func (pm *PrizeManager) executeLosers() {
 	c := len(pm.InactiveMiners)
 
 	for range c / 10 {
-		ui := generateRandNum(c)
+		ui := generateRandNum(c - 1)
 		l[ui] = true
 	}
 
