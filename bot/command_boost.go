@@ -10,6 +10,7 @@ import (
 func commandBoost(c telebot.Context, p string) error {
 	u := getUser(c.Sender().ID)
 	msg := lBoosted
+	var btn *telebot.ReplyMarkup
 
 	pids := strings.Split(p, "-")[1]
 	pid, err := strconv.Atoi(pids)
@@ -33,7 +34,16 @@ func commandBoost(c telebot.Context, p string) error {
 		}
 	}
 
-	notify(msg, c.Sender().ID)
+	unb := u.getUnboosted()
+
+	if len(unb) > 0 {
+		btn = getButtonLink(unb[0].Name, unb[0].Link)
+		msg += "\n\nClick the button bellow for the next boost:"
+	} else {
+		msg += "\n\nYou have no more boosts available. 👍"
+	}
+
+	notifyWithButton(msg, c.Sender().ID, btn)
 
 	return nil
 }

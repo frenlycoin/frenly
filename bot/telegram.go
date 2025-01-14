@@ -39,6 +39,13 @@ func notify(msg string, tgid int64) {
 	b.Send(rec, msg, telebot.NoPreview)
 }
 
+func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
+	rec := &telebot.Chat{
+		ID: tgid,
+	}
+	b.Send(rec, msg, btn, telebot.NoPreview)
+}
+
 func notifyRestart() {
 	mb := getRestartButton()
 	rec := &telebot.Chat{
@@ -132,6 +139,17 @@ func getClaimButton() *telebot.ReplyMarkup {
 func getGroupButton(link string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 	btn := rm.URL("Claim In Group", link)
+
+	rm.Inline(
+		rm.Row(btn),
+	)
+
+	return rm
+}
+
+func getButtonLink(name string, link string) *telebot.ReplyMarkup {
+	rm := &telebot.ReplyMarkup{}
+	btn := rm.URL(name, link)
 
 	rm.Inline(
 		rm.Row(btn),

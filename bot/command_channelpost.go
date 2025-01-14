@@ -10,7 +10,7 @@ func commandChannelPost(c telebot.Context) error {
 	var err error
 
 	if c.Chat().ID != News {
-		ch, err := getChannelOrCreate(c.Chat().ID, nil)
+		ch, err := getChannelOrCreate(c, nil)
 		if err != nil {
 			loge(err)
 		}

@@ -191,6 +191,33 @@ func (u *User) processTmuPayments() bool {
 	return false
 }
 
+func (u *User) getUnboosted() []*Boost {
+	var ub []*Boost
+
+	var posts []*Post
+	db.Find(&posts)
+
+	for _, p := range posts {
+		skip := false
+		for _, b := range u.Boosts {
+			if b.ID == p.ID {
+				skip = true
+			}
+		}
+
+		if !skip {
+			c := getChannel(int(p.ChannelId))
+			b := &Boost{
+				Name: c.Name,
+				Link: "t.me/" + c.Link + fmt.Sprintf("/%d", p.TelegramId),
+			}
+			ub = append(ub, b)
+		}
+	}
+
+	return ub
+}
+
 func getUserOrCreate(c telebot.Context) (*User, error) {
 	u := &User{}
 
@@ -255,7 +282,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 		code = generateCode()
 	}
 
-	res := db.Preload("Referrer").Where(&User{TelegramId: tgid}).Attrs(
+	res := db.Preload("Referrer").Preload("Boosts").Where(&User{TelegramId: tgid}).Attrs(
 		&User{
 			TMU:              10000000,
 			Code:             code,
