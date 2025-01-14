@@ -2,7 +2,6 @@ package bot
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"gopkg.in/telebot.v3"
@@ -28,7 +27,6 @@ func commandCheck(c telebot.Context) error {
 			message = "This user has never mined.\n\nTo start mining, subscribe to our channel and click the button bellow."
 			btn = getAppButton()
 		}
-		log.Println(prettyPrint(miner))
 	} else {
 		miner := getUser(c.Message().Sender.ID)
 		if miner.ID > 0 {

@@ -1,13 +1,17 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"time"
+
+	"gopkg.in/telebot.v3"
 )
 
 type PrizeManager struct {
 	InactiveMiners []*User
 	ActiveMiners   []*User
+	WinMsg         *telebot.Message
 }
 
 func (pm *PrizeManager) loadMiners() {
@@ -47,12 +51,14 @@ func (pm *PrizeManager) executeLosers() {
 
 	for ui := range l {
 		lu := pm.InactiveMiners[ui]
-		notify(lNotWon, lu.TelegramId)
+		msg := fmt.Sprintf(lNotWon, fmt.Sprintf("t.me/FrenlyNews/%d", pm.WinMsg.ID))
+		log.Println(lNotWon)
+		notify(msg, lu.TelegramId)
 		log.Printf("Loser: %s", lu.Name)
 	}
 }
 
-func (pm *PrizeManager) executeWinner() {
+func (pm *PrizeManager) executeWinner() *telebot.Message {
 	wn := generateRandNum(len(pm.ActiveMiners))
 	w := pm.ActiveMiners[wn]
 
@@ -62,9 +68,11 @@ func (pm *PrizeManager) executeWinner() {
 	kv.ValueInt = int64(w.ID)
 	db.Save(kv)
 
-	notifyPrize(w)
+	wm := notifyPrize(w)
 
 	log.Printf("Winner: %s", w.Name)
+
+	return wm
 }
 
 func (pm *PrizeManager) start() {
@@ -72,9 +80,9 @@ func (pm *PrizeManager) start() {
 		if pm.isTriggering() {
 			pm.loadMiners()
 
-			pm.executeLosers()
+			pm.WinMsg = pm.executeWinner()
 
-			pm.executeWinner()
+			pm.executeLosers()
 		}
 
 		time.Sleep(time.Second * PrizeTick)

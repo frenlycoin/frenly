@@ -64,7 +64,10 @@ You were randomly chosen as Frenly App TON prize winner in our daily contest, bu
 
 To prevent this from happening again, make sure to restart your miner every day.
 
-If you need any help, join @FrenlyCoin group.`
+If you need any help, join @FrenlyCoin group.
+
+You can see the winner announcement here:
+%s`
 
 	lWonPrize = `<b><u>Daily TON Prize Winner!</u></b> 🚀
 	

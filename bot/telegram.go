@@ -179,7 +179,7 @@ func notifyEnd(tgid int64) {
 	}
 }
 
-func notifyPrize(u *User) {
+func notifyPrize(u *User) *telebot.Message {
 	cb := getClaimButton()
 	msg := fmt.Sprintf(lWonPrize, u.Name)
 
@@ -211,4 +211,6 @@ func notifyPrize(u *User) {
 	if err != nil {
 		loge(err)
 	}
+
+	return mc
 }
