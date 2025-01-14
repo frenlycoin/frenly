@@ -9,6 +9,7 @@ import (
 
 func commandBoost(c telebot.Context, p string) error {
 	u := getUser(c.Sender().ID)
+	msg := lBoosted
 
 	pids := strings.Split(p, "-")[1]
 	pid, err := strconv.Atoi(pids)
@@ -18,10 +19,21 @@ func commandBoost(c telebot.Context, p string) error {
 
 	po := getPost(pid)
 
-	u.Boosts = append(u.Boosts, po)
-	db.Save(u)
+	for _, p := range u.Boosts {
+		if p.ID == po.ID {
+			msg = lAreadyBoosted
+		}
+	}
 
-	notify(lBoosted, c.Sender().ID)
+	if msg == lBoosted {
+		u.Boosts = append(u.Boosts, po)
+		err = db.Save(u).Error
+		if err != nil {
+			loge(err)
+		}
+	}
+
+	notify(msg, c.Sender().ID)
 
 	return nil
 }

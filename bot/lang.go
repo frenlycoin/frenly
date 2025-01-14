@@ -95,4 +95,6 @@ After that, try claiming reward again.`
 	lBoost = `Click the button bellow to boot your Frenly App miner's health! 🚀`
 
 	lBoosted = `Miner health boosted successfully! 🚀`
+
+	lAreadyBoosted = `This boost has already been used.`
 )
