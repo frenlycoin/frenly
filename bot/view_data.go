@@ -46,6 +46,7 @@ func viewData(ctx *macaron.Context) {
 			dr.IsMember = u.isMember()
 			dr.CycleCount = u.CycleCount
 			dr.MiningTime = u.MiningTime
+			dr.Health = u.health()
 			dr.Boosts = u.getUnboosted()
 		}
 	}
@@ -68,6 +69,7 @@ type DataResponse struct {
 	CycleActive     bool       `json:"cycle_active"`
 	CycleCount      uint64     `json:"cycle_count"`
 	MiningTime      time.Time  `json:"mining_time"`
+	Health          int64      `json:"health"`
 	Boosts          []*Boost   `json:"boosts"`
 }
 

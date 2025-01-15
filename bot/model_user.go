@@ -195,7 +195,7 @@ func (u *User) getUnboosted() []*Boost {
 	var ub []*Boost
 
 	var posts []*Post
-	db.Find(&posts)
+	db.Where("created_at > ?", time.Now().Add(-48*time.Hour)).Find(&posts)
 
 	for _, p := range posts {
 		skip := false
@@ -216,6 +216,33 @@ func (u *User) getUnboosted() []*Boost {
 	}
 
 	return ub
+}
+
+func (u *User) health() int64 {
+	health := int64(0)
+
+	if !u.isActive() {
+		return health
+	}
+
+	bt := getBoostTasks(u.MiningTime)
+	ub := u.getUnboosted()
+
+	hf := float64(len(ub)) / float64(len(bt))
+
+	log.Println(hf)
+	log.Println(bt)
+	log.Println(ub)
+
+	health = 100 - int64(hf*float64(100))
+
+	if health > 100 {
+		health = 100
+	} else if health < 10 {
+		health = 10
+	}
+
+	return health
 }
 
 func getUserOrCreate(c telebot.Context) (*User, error) {
