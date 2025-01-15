@@ -230,10 +230,6 @@ func (u *User) health() int64 {
 
 	hf := float64(len(ub)) / float64(len(bt))
 
-	log.Println(hf)
-	log.Println(bt)
-	log.Println(ub)
-
 	health = 100 - int64(hf*float64(100))
 
 	if health > 100 {
