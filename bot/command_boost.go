@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -43,7 +44,7 @@ func commandBoost(c telebot.Context, p string) error {
 
 	if len(unb) > 0 {
 		btn = getButtonLink(unb[0].Name, unb[0].Link)
-		msg += "\n\nClick the button bellow for the next boost:"
+		msg += fmt.Sprintf("\n\nBoosts Left: %d\n\nClick the button bellow for the next boost:", len(unb))
 	} else {
 		msg += "\n\nYou have no more boosts available. 👍"
 	}
