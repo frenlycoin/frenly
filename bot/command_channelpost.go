@@ -34,6 +34,7 @@ func commandChannelPost(c telebot.Context) error {
 			_, err = b.Edit(msg, fb)
 			if err != nil {
 				loge(err)
+				db.Delete(p)
 			}
 		} else if ch.Type == TypeLink {
 			msg := c.Message()
@@ -42,6 +43,7 @@ func commandChannelPost(c telebot.Context) error {
 			_, err = b.Edit(msg, text, telebot.NoPreview)
 			if err != nil {
 				loge(err)
+				db.Delete(p)
 			}
 		}
 	}
