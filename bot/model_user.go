@@ -3,6 +3,7 @@ package bot
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"gopkg.in/telebot.v3"
@@ -44,7 +45,7 @@ func (u *User) rewards(checkFollow bool) uint64 {
 
 	r = uint64(time.Since(u.LastUpdated).Seconds() * float64(u.TMU) / (2400 * 3600))
 
-	cycleIndex := float64(u.CycleCount) / float64(time.Since(u.MiningTime).Hours()/24)
+	cycleIndex := float64(u.CycleCount+1) / float64(time.Since(u.MiningTime).Hours()/24)
 	if cycleIndex > 1 {
 		cycleIndex = 1
 	}
@@ -286,7 +287,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 
 	p := c.Message().Payload
 
-	if u.ReferrerID == nil && len(p) > 0 && p != "undefined" {
+	if u.ReferrerID == nil && len(p) > 0 && p != "undefined" && !strings.HasPrefix(p, "b-") {
 		r := getUserByCode(p)
 		if r.ID != 0 && r.ID != u.ID {
 			u.ReferrerID = &r.ID
