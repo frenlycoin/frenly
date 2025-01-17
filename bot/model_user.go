@@ -159,7 +159,7 @@ func (u *User) processTmuPayments() bool {
 	// checkNewTmu(u)
 
 	if new >= 50000000 {
-		new *= 5
+		new *= 4
 		u.TMU += new
 		now := time.Now()
 		u.TimeLock = &now

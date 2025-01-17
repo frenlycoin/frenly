@@ -8,7 +8,7 @@ import (
 
 type Post struct {
 	gorm.Model
-	TelegramId int `gorm:"size:255;uniqueIndex"`
+	TelegramId int `gorm:"size:255"`
 	ChannelId  uint
 	Channel    Channel
 	Boosted    []*User `gorm:"many2many:boosts;"`
