@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"log"
 	"strconv"
 	"strings"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func commandBoost(c telebot.Context, p string) error {
+	log.Println(p)
 	u := getUser(c.Sender().ID)
 	msg := lBoosted
 	var btn *telebot.ReplyMarkup
@@ -20,18 +22,21 @@ func commandBoost(c telebot.Context, p string) error {
 
 	po := getPost(pid)
 
-	for _, p := range u.Boosts {
-		if p.ID == po.ID {
-			msg = lAreadyBoosted
+	if po.ID == 0 {
+		for _, p := range u.Boosts {
+			if p.ID == po.ID {
+				msg = lAreadyBoosted
+			}
 		}
-	}
 
-	if msg == lBoosted {
-		u.Boosts = append(u.Boosts, po)
-		err = db.Save(u).Error
-		if err != nil {
-			loge(err)
+		if msg == lBoosted {
+			err := db.Model(u).Association("Boosts").Append(po)
+			if err != nil {
+				loge(err)
+			}
 		}
+	} else {
+		msg = lAreadyBoosted
 	}
 
 	unb := u.getUnboosted()
