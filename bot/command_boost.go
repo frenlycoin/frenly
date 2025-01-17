@@ -22,7 +22,7 @@ func commandBoost(c telebot.Context, p string) error {
 
 	po := getPost(pid)
 
-	if po.ID == 0 {
+	if po.ID != 0 {
 		for _, p := range u.Boosts {
 			if p.ID == po.ID {
 				msg = lAreadyBoosted
