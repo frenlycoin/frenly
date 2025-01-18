@@ -1,7 +1,11 @@
 package bot
 
 const (
-	lStart = "🔵 <b><u>Welcome to Frenly App!</u></b>\n\nTo start mining TON, first subscribe to our channel and then click \"Start Mining\" button bellow!"
+	lStart = `🔵 <b><u>Welcome to Frenly App!</u></b>
+
+To start mining TON, first subscribe to our channel and then click "Start Mining" button bellow!
+
+Every 24 hours, you need to restart your daily mining cycle and you will get notification to do it. You also need to keep your miner's health at 100% by boosting it with buttons on different channels.`
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 

@@ -2,7 +2,6 @@ package bot
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -10,8 +9,19 @@ import (
 )
 
 func commandBoost(c telebot.Context, p string) error {
-	log.Println(p)
 	u := getUser(c.Sender().ID)
+
+	if u.ID == 0 {
+		_, err := getUserOrCreate(c)
+		if err != nil {
+			loge(err)
+		}
+
+		ab := getAppButton()
+		b.Send(c.Sender(), lStart, ab)
+		return nil
+	}
+
 	msg := lBoosted
 	var btn *telebot.ReplyMarkup
 

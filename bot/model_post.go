@@ -38,7 +38,7 @@ func getPost(id int) *Post {
 func getBoostTasks(t time.Time) []*Post {
 	var posts []*Post
 
-	db.Where("created_at > ?", t.Add(-48*time.Hour)).Find(&posts)
+	db.Where("created_at > ?", t).Find(&posts)
 
 	return posts
 }

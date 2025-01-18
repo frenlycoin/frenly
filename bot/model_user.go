@@ -198,7 +198,7 @@ func (u *User) getUnboosted() []*Boost {
 	var ub []*Boost
 
 	var posts []*Post
-	db.Where("created_at > ?", time.Now().Add(-48*time.Hour)).Find(&posts)
+	db.Where("created_at > ?", u.MiningTime).Find(&posts)
 
 	for _, p := range posts {
 		skip := false
@@ -230,6 +230,10 @@ func (u *User) health() int64 {
 
 	bt := getBoostTasks(u.MiningTime)
 	ub := u.getUnboosted()
+
+	if len(bt) == 0 || len(ub) == 0 {
+		return 100
+	}
 
 	hf := float64(len(ub)) / float64(len(bt))
 

@@ -8,32 +8,36 @@ import (
 )
 
 func commandStart(c telebot.Context) error {
+	var err error
 	p := c.Message().Payload
-	u, err := getUserOrCreate(c)
-	if err != nil {
-		loge(err)
-	}
-
-	if p == "restart" {
-		rb := getRestartButtons(c)
-		if time.Since(u.MiningTime).Minutes() > 1410 {
-			u.MiningTime = time.Now()
-			u.LastNotification = time.Now()
-			u.CycleCount++
-			if err := db.Save(u).Error; err != nil {
-				loge(err)
-			}
-			b.Send(c.Sender(), lCycleRestarted, rb)
-		} else {
-			b.Send(c.Sender(), lCycleRunning, rb)
-		}
-	} else if p == "claim" {
-		commandClaim(c)
-	} else if strings.HasPrefix(p, "b-") {
-		commandBoost(c, p)
-	} else {
+	u := getUser(c.Sender().ID)
+	if u.ID == 0 {
 		ab := getAppButton()
 		b.Send(c.Sender(), lStart, ab)
+
+		u, err = getUserOrCreate(c)
+		if err != nil {
+			loge(err)
+		}
+	} else {
+		if p == "restart" {
+			rb := getRestartButtons(c)
+			if time.Since(u.MiningTime).Minutes() > 1410 {
+				u.MiningTime = time.Now()
+				u.LastNotification = time.Now()
+				u.CycleCount++
+				if err := db.Save(u).Error; err != nil {
+					loge(err)
+				}
+				b.Send(c.Sender(), lCycleRestarted, rb)
+			} else {
+				b.Send(c.Sender(), lCycleRunning, rb)
+			}
+		} else if p == "claim" {
+			commandClaim(c)
+		} else if strings.HasPrefix(p, "b-") {
+			commandBoost(c, p)
+		}
 	}
 
 	return nil
