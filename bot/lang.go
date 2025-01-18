@@ -5,7 +5,9 @@ const (
 
 To start mining TON, first subscribe to our channel and then click "Start Mining" button bellow!
 
-Every 24 hours, you need to restart your daily mining cycle and you will get notification to do it. You also need to keep your miner's health at 100% by boosting it with buttons on different channels.`
+Every 24 hours, you need to restart your daily mining cycle and you will get notification to do it. You also need to keep your miner's health at 100% by boosting it with buttons on different channels.
+
+<b><u>Health percentage determines the percentage of reward you receive.</u></b>`
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 
