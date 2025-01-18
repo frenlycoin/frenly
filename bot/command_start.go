@@ -11,11 +11,11 @@ func commandStart(c telebot.Context) error {
 	var err error
 	p := c.Message().Payload
 	u := getUser(c.Sender().ID)
-	if u.ID == 0 {
+	if u.ID == 0 || p == "" {
 		ab := getAppButton()
 		b.Send(c.Sender(), lStart, ab)
 
-		u, err = getUserOrCreate(c)
+		_, err = getUserOrCreate(c)
 		if err != nil {
 			loge(err)
 		}
