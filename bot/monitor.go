@@ -11,14 +11,14 @@ type Monitor struct {
 
 func (m *Monitor) loadMiners() {
 	m.Miners = nil
-	db.Find(&m.Miners)
+	db.Preload("Referrer").Preload("Boosts").Find(&m.Miners)
 }
 
 func (m *Monitor) sendNotifications() {
 	// counter := 1
 	for _, miner := range m.Miners {
 		if m.isSending(miner) {
-			notifyEnd(miner.TelegramId)
+			notifyEnd(miner)
 			log.Printf("Notification: %s", miner.Name)
 		}
 

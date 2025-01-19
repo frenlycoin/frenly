@@ -2,6 +2,7 @@ package bot
 
 import (
 	"log"
+	"time"
 
 	"gopkg.in/telebot.v3"
 	"gorm.io/gorm"
@@ -60,8 +61,9 @@ func Start() {
 
 	// notifystart(lAd1, NewsDev)
 
-	// u := getUser(7967928871)
-	// notifyEnd(7967928871)
+	u := getUser(7147484327)
+	log.Println(time.Since(u.MiningTime).Minutes())
+	// notifyEnd(u)
 	// log.Println(prettyPrint(u))
 
 	// notifyPrize(u)

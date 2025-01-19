@@ -103,6 +103,22 @@ func getRestartButtonChannel() *telebot.ReplyMarkup {
 	return rm
 }
 
+func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
+	kv := &KeyValue{Key: "restartPostId"}
+	db.FirstOrCreate(kv, kv)
+	link := fmt.Sprintf("https://t.me/FrenlyNews/%d", kv.ValueInt)
+
+	rm := &telebot.ReplyMarkup{}
+	btn1 := rm.URL("Boost Miner", boostLink)
+	btn2 := rm.URL("Restart Mining", link)
+
+	rm.Inline(
+		rm.Row(btn1, btn2),
+	)
+
+	return rm
+}
+
 func getStartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 	btn := rm.URL("Start Mining Now 🚀", "t.me/FrenlyRobot")
@@ -158,17 +174,24 @@ func getButtonLink(name string, link string) *telebot.ReplyMarkup {
 	return rm
 }
 
-func notifyEnd(tgid int64) {
-	rb := getRestartButtonChannel()
-
-	rec := &telebot.Chat{
-		ID: tgid,
+func notifyEnd(u *User) {
+	var rb *telebot.ReplyMarkup
+	msg := lCycleFinished
+	unb := u.getUnboosted()
+	if len(unb) > 0 {
+		rb = getRestartButtonBoost(unb[0].Link)
+		msg += fmt.Sprintf("\n\n<b><u>Your miner's health is at %d%%!</u></b>\n\n<b><u>Boost your miner by clicking the button bellow and then boost button under each post that bot leads you to! This needs to be done to collect full reward.</u></b>", u.health())
+	} else {
+		rb = getRestartButtonChannel()
 	}
 
-	_, err := b.Send(rec, lCycleFinished, rb, telebot.NoPreview)
+	rec := &telebot.Chat{
+		ID: u.TelegramId,
+	}
+
+	_, err := b.Send(rec, msg, rb, telebot.NoPreview)
 	if err != nil {
 		if strings.Contains(err.Error(), "blocked") {
-			u := getUser(tgid)
 			u.BotBlocked = true
 			if err := db.Save(u).Error; err != nil {
 				loge(err)
