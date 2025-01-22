@@ -42,3 +42,11 @@ func getChannel(id int) *Channel {
 
 	return c
 }
+
+func getChannelByLink(link string) *Channel {
+	c := &Channel{}
+
+	db.Where("link = ?", link).First(c)
+
+	return c
+}

@@ -27,6 +27,7 @@ func initTelegram(key string) *telebot.Bot {
 	b.Handle("/check", commandCheck)
 
 	b.Handle(telebot.OnChannelPost, commandChannelPost)
+	b.Handle(telebot.OnCallback, commandChannelDelete)
 	b.Handle(telebot.OnUserJoined, commandJoin)
 
 	return b
@@ -111,6 +112,7 @@ func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 	btn1 := rm.URL("Boost Miner", boostLink)
 	btn2 := rm.URL("Restart Mining", link)
+	// btn2 := rm.URL("Test", "https://bot.frenlycoin.com/data/7422140567/unknown/unknown/Frenly")
 
 	rm.Inline(
 		rm.Row(btn1, btn2),
@@ -169,6 +171,18 @@ func getButtonLink(name string, link string) *telebot.ReplyMarkup {
 
 	rm.Inline(
 		rm.Row(btn),
+	)
+
+	return rm
+}
+
+func getButtonsBoost(name string, link string) *telebot.ReplyMarkup {
+	rm := &telebot.ReplyMarkup{}
+	btn1 := rm.URL(name, link)
+	btn2 := rm.Data("Missing Boost", link)
+
+	rm.Inline(
+		rm.Row(btn1, btn2),
 	)
 
 	return rm
@@ -236,4 +250,30 @@ func notifyPrize(u *User) *telebot.Message {
 	}
 
 	return mc
+}
+
+func postExists(postId string, chId int) bool {
+	// c := getChannel(chId)
+
+	sm := telebot.StoredMessage{
+		MessageID: postId,
+		ChatID:    int64(chId),
+	}
+
+	ch, err := b.ChatByID(int64(chId))
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	err = b.React(ch, sm, telebot.ReactionOptions{})
+	if err != nil {
+		if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
+			return false
+		} else {
+			return true
+		}
+	}
+
+	return true
 }

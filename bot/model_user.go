@@ -208,6 +208,10 @@ func (u *User) getUnboosted() []*Boost {
 			}
 		}
 
+		// if !p.existsOnTg() {
+		// 	skip = true
+		// }
+
 		if !skip {
 			c := getChannel(int(p.ChannelId))
 			b := &Boost{

@@ -2,7 +2,6 @@ package bot
 
 import (
 	"log"
-	"time"
 
 	"gopkg.in/telebot.v3"
 	"gorm.io/gorm"
@@ -39,36 +38,6 @@ func Start() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	logs("Bot started successfully. 🚀")
-
-	// var users []*User
-	// db.Find(&users)
-	// counter := 0
-
-	// for _, u := range users {
-	// 	if !u.hasMigrated() {
-	// 		counter++
-	// 		log.Printf("%d Not: %s", counter, u.Name)
-	// 	}
-	// }
-
-	// for _, u := range users {
-	// 	u.processTmuPayments()
-	// 	counter++
-	// 	log.Printf("%d Not: %s", counter, u.Name)
-	// }
-
-	// notifyRestart()
-
-	// notifystart(lAd1, NewsDev)
-
-	u := getUser(7147484327)
-	log.Println(time.Since(u.MiningTime).Minutes())
-	// notifyEnd(u)
-	// log.Println(prettyPrint(u))
-
-	// notifyPrize(u)
-
-	// notify(lNotWon, Admin)
 
 	b.Start()
 }

@@ -8,6 +8,7 @@ import (
 
 func commandChannelPost(c telebot.Context) error {
 	var err error
+	// var msg *telebot.Message
 
 	if c.Chat().ID != News {
 		ch, err := getChannelOrCreate(c, nil)
