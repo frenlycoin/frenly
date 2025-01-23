@@ -54,6 +54,8 @@ func (u *User) rewards(checkFollow bool) uint64 {
 
 	healthIndex := float64(u.health()) / 100
 
+	// log.Printf("health index: %s %.9f", u.Name, healthIndex)
+
 	r = uint64(float64(r) * cycleIndex * healthIndex)
 	// r = uint64(float64(r) * cycleIndex)
 

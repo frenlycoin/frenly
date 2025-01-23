@@ -12,7 +12,7 @@ func (c *Cache) loadStatsCache() {
 	tmu := float64(0)
 	reward := uint64(0)
 	var users []*User
-	db.Find(&users)
+	db.Preload("Referrer").Preload("Boosts").Find(&users)
 	count := len(users)
 	countActive := 0
 
