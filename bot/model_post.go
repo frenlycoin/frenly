@@ -30,7 +30,7 @@ func getPostOrCreate(msgId int, c *Channel) (*Post, error) {
 func getPost(id int) *Post {
 	p := &Post{}
 
-	db.First(p, id)
+	db.Preload("Channel").First(p, id)
 
 	return p
 }
