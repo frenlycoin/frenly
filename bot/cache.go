@@ -10,7 +10,7 @@ type Cache struct {
 
 func (c *Cache) loadStatsCache() {
 	tmu := float64(0)
-	reward := float64(0)
+	reward := uint64(0)
 	var users []*User
 	db.Find(&users)
 	count := len(users)
@@ -18,7 +18,7 @@ func (c *Cache) loadStatsCache() {
 
 	for _, u := range users {
 		tmu += (float64(u.TMU) / float64(Mul9))
-		reward += (float64(u.rewards(false)) / float64(Mul9))
+		reward += u.rewards(false)
 		if u.isActive() {
 			countActive++
 		}
@@ -27,7 +27,7 @@ func (c *Cache) loadStatsCache() {
 	c.StatsCache.Miners = count
 	c.StatsCache.ActiveMiners = countActive
 	c.StatsCache.TMU = tmu
-	c.StatsCache.RewardTMU = reward
+	c.StatsCache.RewardTMU = float64(reward) / float64(Mul9)
 }
 
 func (c *Cache) start() {
