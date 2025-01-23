@@ -105,5 +105,7 @@ After that, try claiming reward again.`
 
 	lBoosted = `Miner health boosted successfully! 🚀`
 
-	lAreadyBoosted = `This boost has already been used.`
+	lAlreadyBoosted = `This boost has already been used.`
+
+	lBoostTooOld = `This boost is too old to be used. To <b><u>receive full reward</u></b>, use available boosts each time before daily mining cycle reset.`
 )

@@ -34,20 +34,24 @@ func commandBoost(c telebot.Context, p string) error {
 	po := getPost(pid)
 
 	if po.ID != 0 {
-		for _, p := range u.Boosts {
-			if p.ID == po.ID {
-				msg = lAreadyBoosted
+		if u.MiningTime.Before(po.CreatedAt) {
+			for _, p := range u.Boosts {
+				if p.ID == po.ID {
+					msg = lAlreadyBoosted
+				}
 			}
-		}
 
-		if msg == lBoosted {
-			err := db.Model(u).Association("Boosts").Append(po)
-			if err != nil {
-				loge(err)
+			if msg == lBoosted {
+				err := db.Model(u).Association("Boosts").Append(po)
+				if err != nil {
+					loge(err)
+				}
 			}
+		} else {
+			msg = lBoostTooOld
 		}
 	} else {
-		msg = lAreadyBoosted
+		msg = lAlreadyBoosted
 	}
 
 	unb := u.getUnboosted()
