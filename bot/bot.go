@@ -39,5 +39,7 @@ func Start() {
 
 	logs("Bot started successfully. 🚀")
 
+	initTemp()
+
 	b.Start()
 }

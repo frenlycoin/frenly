@@ -14,6 +14,7 @@ func initMacaron() *macaron.Macaron {
 
 	mac.Get("/data/:telegramid/:referral/:code/:name", viewData)
 	mac.Get("/paid/:telegramid", viewPayment)
+	mac.Get("/stats", viewStats)
 
 	mac.Post("/save/:telegramid", binding.Bind(UserForm{}), viewSave)
 	mac.Post("/compound/:telegramid", viewCompound)
