@@ -19,10 +19,15 @@ type Post struct {
 func getPostOrCreate(msg *telebot.Message, c *Channel) (*Post, error) {
 	p := &Post{}
 
-	res := db.Preload("Channel").Where(&Post{TelegramId: msg.ID, ChannelId: c.ID, AlbumId: msg.AlbumID}).FirstOrCreate(p)
+	aid := msg.AlbumID
+	if aid == "" {
+		aid = generateCode()
+	}
+
+	res := db.Preload("Channel").Where(&Post{TelegramId: msg.ID, ChannelId: c.ID, AlbumId: aid}).FirstOrCreate(p)
 
 	if res.Error != nil {
-		loge(res.Error)
+		// loge(res.Error)
 		return p, res.Error
 	}
 

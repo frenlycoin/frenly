@@ -2,6 +2,8 @@ package bot
 
 import (
 	"fmt"
+	"log"
+	"strings"
 
 	"gopkg.in/telebot.v3"
 )
@@ -18,10 +20,14 @@ func commandChannelPost(c telebot.Context) error {
 
 		p := getPostByAlbumId(c.Message().AlbumID)
 
-		if p.ID == 0 {
+		if p.ID == 0 || len(c.Message().AlbumID) == 0 {
 			p, err = getPostOrCreate(c.Message(), ch)
 			if err != nil {
-				loge(err)
+				if strings.Contains(err.Error(), "duplicate key value violates") {
+					log.Println(err)
+				} else {
+					loge(err)
+				}
 				return err
 			}
 
