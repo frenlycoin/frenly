@@ -10,14 +10,14 @@ import (
 // Logs error
 func loge(err error) {
 	errMsg := getCallerInfo() + err.Error()
-	notify(errMsg, Admin)
+	notify(errMsg, Frenly)
 	log.Println(errMsg)
 }
 
 // Logs string
 func logs(errMsg string) {
 	errMsg = getCallerInfo() + errMsg
-	notify(errMsg, Admin)
+	notify(errMsg, Frenly)
 	log.Println(errMsg)
 }
 

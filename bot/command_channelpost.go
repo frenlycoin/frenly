@@ -2,6 +2,7 @@ package bot
 
 import (
 	"fmt"
+	"log"
 
 	"gopkg.in/telebot.v3"
 )
@@ -15,6 +16,8 @@ func commandChannelPost(c telebot.Context) error {
 		if err != nil {
 			loge(err)
 		}
+
+		log.Println(c.Message().AlbumID)
 
 		p, err := getPostOrCreate(c.Message().ID, ch)
 		if err != nil {

@@ -7,6 +7,8 @@ const (
 
 	Admin = int64(7967928871)
 
+	Frenly = int64(7422140567)
+
 	Group = int64(-1002257590502)
 
 	GroupHall = int64(-1002405271136)
