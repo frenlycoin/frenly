@@ -3,6 +3,7 @@ package bot
 import (
 	"time"
 
+	"gopkg.in/telebot.v3"
 	"gorm.io/gorm"
 )
 
@@ -12,12 +13,13 @@ type Post struct {
 	ChannelId  uint
 	Channel    Channel
 	Boosted    []*User `gorm:"many2many:boosts;"`
+	AlbumId    string  `gorm:"size:255;uniqueIndex"`
 }
 
-func getPostOrCreate(msgId int, c *Channel) (*Post, error) {
+func getPostOrCreate(msg *telebot.Message, c *Channel) (*Post, error) {
 	p := &Post{}
 
-	res := db.Preload("Channel").Where(&Post{TelegramId: msgId, ChannelId: c.ID}).FirstOrCreate(p)
+	res := db.Preload("Channel").Where(&Post{TelegramId: msg.ID, ChannelId: c.ID, AlbumId: msg.AlbumID}).FirstOrCreate(p)
 
 	if res.Error != nil {
 		loge(res.Error)
@@ -31,6 +33,14 @@ func getPost(id int) *Post {
 	p := &Post{}
 
 	db.Preload("Channel").First(p, id)
+
+	return p
+}
+
+func getPostByAlbumId(albumId string) *Post {
+	p := &Post{}
+
+	db.Preload("Channel").Where("album_id = ?", albumId).First(p)
 
 	return p
 }

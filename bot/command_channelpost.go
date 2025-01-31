@@ -2,7 +2,6 @@ package bot
 
 import (
 	"fmt"
-	"log"
 
 	"gopkg.in/telebot.v3"
 )
@@ -17,37 +16,44 @@ func commandChannelPost(c telebot.Context) error {
 			loge(err)
 		}
 
-		log.Println(c.Message().AlbumID)
+		p := getPostByAlbumId(c.Message().AlbumID)
 
-		p, err := getPostOrCreate(c.Message().ID, ch)
-		if err != nil {
-			loge(err)
-		}
-
-		link := fmt.Sprintf("t.me/FrenlyRobot?start=b-%d", p.ID)
-
-		if ch.Type == TypePost {
-			fb := getFrenlyButton(link)
-			_, err = b.Send(c.Chat(), lBoost, fb, telebot.NoPreview)
+		if p.ID == 0 {
+			p, err = getPostOrCreate(c.Message(), ch)
 			if err != nil {
 				loge(err)
+				return err
 			}
-		} else if ch.Type == TypeButton {
-			fb := getFrenlyButton(link)
-			msg := c.Message()
-			_, err = b.Edit(msg, fb)
-			if err != nil {
-				loge(err)
-				db.Delete(p)
+
+			link := fmt.Sprintf("t.me/FrenlyRobot?start=b-%d", p.ID)
+
+			if len(c.Message().AlbumID) > 0 && ch.Type != TypePost {
+				ch.Type = TypePost
 			}
-		} else if ch.Type == TypeLink {
-			msg := c.Message()
-			text := msg.Text
-			text += "\n\n<b><u>Boost Frenly Miner</u></b> 🚀\n" + link
-			_, err = b.Edit(msg, text, telebot.NoPreview)
-			if err != nil {
-				loge(err)
-				db.Delete(p)
+
+			if ch.Type == TypePost {
+				fb := getFrenlyButton(link)
+				_, err = b.Send(c.Chat(), lBoost, fb, telebot.NoPreview)
+				if err != nil {
+					loge(err)
+				}
+			} else if ch.Type == TypeButton {
+				fb := getFrenlyButton(link)
+				msg := c.Message()
+				_, err = b.Edit(msg, fb)
+				if err != nil {
+					loge(err)
+					db.Delete(p)
+				}
+			} else if ch.Type == TypeLink {
+				msg := c.Message()
+				text := msg.Text
+				text += "\n\n<b><u>Boost Frenly Miner</u></b> 🚀\n" + link
+				_, err = b.Edit(msg, text, telebot.NoPreview)
+				if err != nil {
+					loge(err)
+					db.Delete(p)
+				}
 			}
 		}
 	}
