@@ -26,6 +26,8 @@ func viewWithdraw(ctx *macaron.Context) {
 				send(amount, u.AddressWithdraw, conf.Seed)
 
 				notify(fmt.Sprintf("Withdraw: %s (%.9f TON)", u.Name, float64(amount)/float64(Mul9)), Frenly)
+
+				notify(fmt.Sprintf(lCashOut, u.Name, float64(amount)/float64(Mul9)), Group)
 			}
 		}
 	}

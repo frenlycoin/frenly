@@ -108,4 +108,8 @@ After that, try claiming reward again.`
 	lAlreadyBoosted = `This boost has already been used.`
 
 	lBoostTooOld = `This boost is too old to be used. To <b><u>receive full reward</u></b>, use available boosts each time before daily mining cycle reset.`
+
+	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
+
+User %s just cashed out %.9f TON.`
 )

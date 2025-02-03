@@ -39,10 +39,12 @@ func commandChannelPost(c telebot.Context) error {
 
 			if ch.Type == TypePost {
 				fb := getFrenlyButton(link)
-				_, err = b.Send(c.Chat(), lBoost, fb, telebot.NoPreview)
+				m, err := b.Send(c.Chat(), lBoost, fb, telebot.NoPreview)
 				if err != nil {
 					loge(err)
 				}
+				p.TelegramId = m.ID
+				db.Save(p)
 			} else if ch.Type == TypeButton {
 				fb := getFrenlyButton(link)
 				msg := c.Message()
