@@ -8,7 +8,7 @@ import (
 	"gopkg.in/telebot.v3"
 )
 
-func commandBoost(c telebot.Context, p string) error {
+func commandBoost(c telebot.Context, p string, bg bool) error {
 	u := getUser(c.Sender().ID)
 
 	pids := strings.Split(p, "-")[1]
@@ -52,7 +52,9 @@ func commandBoost(c telebot.Context, p string) error {
 		msg += "\n\nYou have no more boosts available. 👍"
 	}
 
-	notifyWithButton(msg, c.Sender().ID, btn)
+	if !bg || len(unb) == 0 {
+		notifyWithButton(msg, c.Sender().ID, btn)
+	}
 
 	return nil
 }

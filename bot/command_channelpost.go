@@ -32,13 +32,14 @@ func commandChannelPost(c telebot.Context) error {
 			}
 
 			link := fmt.Sprintf("t.me/FrenlyRobot?start=b-%d", p.ID)
+			bb := fmt.Sprintf("b-%d", p.ID)
 
 			if len(c.Message().AlbumID) > 0 && ch.Type != TypePost {
 				ch.Type = TypePost
 			}
 
 			if ch.Type == TypePost {
-				fb := getFrenlyButton(link)
+				fb := getFrenlyButtons(bb)
 				m, err := b.Send(c.Chat(), lBoost, fb, telebot.NoPreview)
 				if err != nil {
 					loge(err)
@@ -46,7 +47,7 @@ func commandChannelPost(c telebot.Context) error {
 				p.TelegramId = m.ID
 				db.Save(p)
 			} else if ch.Type == TypeButton {
-				fb := getFrenlyButton(link)
+				fb := getFrenlyButtons(bb)
 				msg := c.Message()
 				_, err = b.Edit(msg, fb)
 				if err != nil {

@@ -27,7 +27,7 @@ func initTelegram(key string) *telebot.Bot {
 	b.Handle("/check", commandCheck)
 
 	b.Handle(telebot.OnChannelPost, commandChannelPost)
-	b.Handle(telebot.OnCallback, commandChannelDelete)
+	b.Handle(telebot.OnCallback, commandCallback)
 	b.Handle(telebot.OnUserJoined, commandJoin)
 
 	return b
@@ -132,12 +132,13 @@ func getStartButton() *telebot.ReplyMarkup {
 	return rm
 }
 
-func getFrenlyButton(link string) *telebot.ReplyMarkup {
+func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("Boost Frenly Miner 🚀", link)
+	btn1 := rm.Data("Boost Frenly Miner 🚀", boostId)
+	btn2 := rm.URL("New User", "t.me/FrenlyRobot")
 
 	rm.Inline(
-		rm.Row(btn),
+		rm.Row(btn1, btn2),
 	)
 
 	return rm

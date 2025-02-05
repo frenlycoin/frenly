@@ -57,7 +57,7 @@ func commandStart(c telebot.Context) error {
 		} else if p == "claim" {
 			commandClaim(c)
 		} else if strings.HasPrefix(p, "b-") {
-			commandBoost(c, p)
+			commandBoost(c, p, false)
 		}
 	}
 
@@ -86,7 +86,7 @@ func getRestartButtons(c telebot.Context) *telebot.ReplyMarkup {
 		rm.Row(btn1, btn2),
 	)
 
-	b.Handle(&btn1, commandCompound)
+	// b.Handle(&btn1, commandCompound)
 
 	return rm
 }
