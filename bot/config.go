@@ -12,6 +12,7 @@ type Config struct {
 	TelegramKey string `yaml:"telegram_key"`
 	DbURI       string `yaml:"db_uri"`
 	Seed        string `yaml:"seed"`
+	Port        int    `yaml:"port"`
 }
 
 // Load method loads configuration file to Config struct

@@ -1,6 +1,8 @@
 package bot
 
 import (
+	"log"
+
 	"github.com/go-macaron/binding"
 	"github.com/go-macaron/cache"
 	macaron "gopkg.in/macaron.v1"
@@ -21,7 +23,9 @@ func initMacaron() *macaron.Macaron {
 	mac.Post("/withdraw/:telegramid", viewWithdraw)
 	mac.Post("/restart/:telegramid", viewRestart)
 
-	go mac.Run("0.0.0.0", 4041)
+	log.Println(conf.Port)
+
+	go mac.Run(conf.Port)
 
 	return mac
 }
