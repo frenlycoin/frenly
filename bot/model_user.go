@@ -96,7 +96,7 @@ func (u *User) isFollower() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(NewsTest)
+	cb, err := b.ChatByID(News)
 	if err != nil {
 		// loge(err)
 		return false
