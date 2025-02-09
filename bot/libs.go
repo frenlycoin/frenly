@@ -68,3 +68,11 @@ func prettyPrint(i interface{}) string {
 	s, _ := json.MarshalIndent(i, "", "\t")
 	return string(s)
 }
+
+func getGroup() int64 {
+	if conf.Dev {
+		return GroupDev
+	}
+
+	return Group
+}

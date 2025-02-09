@@ -11,6 +11,8 @@ const (
 
 	Group = int64(-1002257590502)
 
+	GroupDev = int64(-1002375040061)
+
 	GroupHall = int64(-1002405271136)
 
 	News = int64(-1001717915246)

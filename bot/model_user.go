@@ -124,7 +124,7 @@ func (u *User) isMember() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(Group)
+	cb, err := b.ChatByID(getGroup())
 	if err != nil {
 		loge(err)
 		return false
@@ -279,7 +279,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 		loge(res.Error)
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
-		notify(lNewUser, Group)
+		notify(lNewUser, getGroup())
 		cch.loadStatsCache()
 	}
 
@@ -335,7 +335,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 		loge(res.Error)
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
-		notify(lNewUser, Group)
+		notify(lNewUser, getGroup())
 		cch.loadStatsCache()
 	}
 

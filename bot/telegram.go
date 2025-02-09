@@ -134,7 +134,11 @@ func getStartButton() *telebot.ReplyMarkup {
 
 func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("t.me/FrenlyRobot?start=%s", boostId))
+	// app := &telebot.WebApp{
+	// 	URL: fmt.Sprintf("https://t.me/DevFrenlyRobot/miner?startapp=%s", boostId),
+	// }
+	// btn1 := rm.WebApp("Boost Frenly Miner 🚀", app)
+	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://t.me/DevFrenlyRobot/miner?startapp=%s", boostId))
 	// btn2 := rm.URL("New User", "t.me/FrenlyRobot")
 
 	rm.Inline(
@@ -226,7 +230,7 @@ func notifyPrize(u *User) *telebot.Message {
 	}
 
 	recGroup := &telebot.Chat{
-		ID: Group,
+		ID: getGroup(),
 	}
 
 	mc, err := b.Send(rec, msg, telebot.NoPreview)

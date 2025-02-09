@@ -37,7 +37,7 @@ func commandClaim(c telebot.Context) error {
 	}
 
 	rec := &telebot.Chat{
-		ID: Group,
+		ID: getGroup(),
 	}
 
 	_, err = b.Send(rec, msg, telebot.NoPreview)

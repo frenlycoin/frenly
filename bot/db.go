@@ -11,7 +11,7 @@ func initDb() *gorm.DB {
 	var db *gorm.DB
 	var err error
 
-	if conf.Dev {
+	if conf.SQLite {
 		db, err = gorm.Open(sqlite.Open(conf.DbURI), &gorm.Config{})
 	} else {
 		db, err = gorm.Open(postgres.Open(conf.DbURI), &gorm.Config{})

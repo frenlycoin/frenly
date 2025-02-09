@@ -13,6 +13,7 @@ type Config struct {
 	DbURI       string `yaml:"db_uri"`
 	Seed        string `yaml:"seed"`
 	Port        int    `yaml:"port"`
+	SQLite      bool   `yaml:"sqlite"`
 }
 
 // Load method loads configuration file to Config struct
