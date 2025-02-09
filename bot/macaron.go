@@ -22,6 +22,7 @@ func initMacaron() *macaron.Macaron {
 	mac.Post("/compound/:telegramid", viewCompound)
 	mac.Post("/withdraw/:telegramid", viewWithdraw)
 	mac.Post("/restart/:telegramid", viewRestart)
+	mac.Post("/boost/:telegramid/:boostid", viewBoost)
 
 	log.Println(conf.Port)
 

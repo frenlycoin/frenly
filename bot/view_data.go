@@ -29,12 +29,6 @@ func viewData(ctx *macaron.Context) {
 				}
 			}
 
-			if time.Since(u.MiningTime).Minutes() <= 1410 {
-				dr.CycleActive = true
-			} else {
-				dr.CycleActive = false
-			}
-
 			dr.Code = u.Code
 			dr.AddressDeposit = u.AddressDeposit
 			dr.AddressWithdraw = u.AddressWithdraw
@@ -44,7 +38,6 @@ func viewData(ctx *macaron.Context) {
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
 			dr.IsMember = u.isMember()
-			dr.CycleCount = u.CycleCount
 			dr.MiningTime = u.MiningTime
 			dr.Health = u.health()
 			dr.Boosts = u.getUnboosted()
@@ -66,8 +59,6 @@ type DataResponse struct {
 	TimeLock        *time.Time `json:"time_lock"`
 	IsFollower      bool       `json:"is_follower"`
 	IsMember        bool       `json:"is_member"`
-	CycleActive     bool       `json:"cycle_active"`
-	CycleCount      uint64     `json:"cycle_count"`
 	MiningTime      time.Time  `json:"mining_time"`
 	Health          int64      `json:"health"`
 	Boosts          []*Boost   `json:"boosts"`
