@@ -25,6 +25,7 @@ const (
 
 	AddressTonAd = "UQALCxTkDbNMwLV29fgV0ZzEI9YOgREnFg94Q70OSnRPNhf-"
 
+	// Test
 	DevTonConfig = "https://ton.org/testnet-global.config.json"
 
 	// TonConfig = "https://ton.org/global.config.json"
