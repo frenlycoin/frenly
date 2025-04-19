@@ -238,11 +238,11 @@ func (u *User) health() int64 {
 
 	bt := getBoostTasks(u.MiningTime)
 
-	log.Println(prettyPrint(bt))
+	// log.Println(prettyPrint(bt))
 
 	ub := u.getUnboosted()
 
-	log.Println(prettyPrint(ub))
+	// log.Println(prettyPrint(ub))
 
 	if len(bt) == 0 || len(ub) == 0 {
 		return 100

@@ -25,5 +25,11 @@ func initDb() *gorm.DB {
 		panic(err.Error())
 	}
 
+	err = db.SetupJoinTable(&User{}, "Boosts", &Boost{})
+
+	if err != nil {
+		loge(err)
+	}
+
 	return db
 }
