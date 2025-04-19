@@ -374,6 +374,14 @@ func getUserByCode(code string) *User {
 func getUser(tgid int64) *User {
 	u := &User{}
 
+	db.Preload("Referrer").First(u, &User{TelegramId: tgid})
+
+	return u
+}
+
+func getUserWithBoosts(tgid int64) *User {
+	u := &User{}
+
 	db.Preload("Referrer").Preload("Boosts").First(u, &User{TelegramId: tgid})
 
 	return u

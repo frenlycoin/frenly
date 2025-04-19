@@ -4,6 +4,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // Initializes DB object
@@ -14,7 +15,13 @@ func initDb() *gorm.DB {
 	if conf.SQLite {
 		db, err = gorm.Open(sqlite.Open(conf.DbURI), &gorm.Config{})
 	} else {
-		db, err = gorm.Open(postgres.Open(conf.DbURI), &gorm.Config{})
+		if conf.Dev {
+			db, err = gorm.Open(postgres.Open(conf.DbURI), &gorm.Config{
+				Logger: logger.Default.LogMode(logger.Info),
+			})
+		} else {
+			db, err = gorm.Open(postgres.Open(conf.DbURI), &gorm.Config{})
+		}
 	}
 
 	if err != nil {

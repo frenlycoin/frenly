@@ -12,7 +12,7 @@ func viewBoost(ctx *macaron.Context) {
 	br := &BoostResponse{Success: true}
 	tgid := getTgId(ctx)
 	p := ctx.Params("boostid")
-	u := getUser(tgid)
+	u := getUserWithBoosts(tgid)
 
 	if strings.HasPrefix(p, "b-") {
 		pids := strings.Split(p, "-")[1]
@@ -34,6 +34,7 @@ func viewBoost(ctx *macaron.Context) {
 
 				if !boosted {
 					u.MiningTime = po.CreatedAt
+					u.Boosts = nil
 					if err := db.Save(u).Error; err != nil {
 						loge(err)
 					}
