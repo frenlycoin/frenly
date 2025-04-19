@@ -1,6 +1,8 @@
 package bot
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Boost struct {
 	gorm.Model
