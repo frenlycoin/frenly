@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"log"
 	"strconv"
 	"strings"
 
@@ -36,6 +37,12 @@ func viewBoost(ctx *macaron.Context) {
 					if err != nil {
 						loge(err)
 					}
+
+					u.MiningTime = po.CreatedAt
+					if err := db.Save(u).Error; err != nil {
+						loge(err)
+					}
+					log.Println("Saved mining time.")
 				}
 			}
 		}

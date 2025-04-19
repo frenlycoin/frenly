@@ -157,6 +157,7 @@ func (u *User) hasMigrated() bool {
 }
 
 func (u *User) isActive() bool {
+	// log.Println(u.MiningTime)
 	return time.Since(u.MiningTime).Minutes() <= 2280
 }
 
@@ -197,8 +198,8 @@ func (u *User) processTmuPayments() bool {
 	return false
 }
 
-func (u *User) getUnboosted() []*Boost {
-	var ub []*Boost
+func (u *User) getUnboosted() []*BoostItem {
+	var ub []*BoostItem
 
 	var posts []*Post
 	db.Where("created_at > ?", u.MiningTime).Find(&posts)
@@ -217,7 +218,7 @@ func (u *User) getUnboosted() []*Boost {
 
 		if !skip {
 			c := getChannel(int(p.ChannelId))
-			b := &Boost{
+			b := &BoostItem{
 				Name: c.Name,
 				Link: "t.me/" + c.Link + fmt.Sprintf("/%d", p.TelegramId),
 			}
@@ -236,7 +237,12 @@ func (u *User) health() int64 {
 	}
 
 	bt := getBoostTasks(u.MiningTime)
+
+	log.Println(prettyPrint(bt))
+
 	ub := u.getUnboosted()
+
+	log.Println(prettyPrint(ub))
 
 	if len(bt) == 0 || len(ub) == 0 {
 		return 100

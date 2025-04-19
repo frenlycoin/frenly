@@ -50,21 +50,21 @@ func viewData(ctx *macaron.Context) {
 }
 
 type DataResponse struct {
-	Earnings        float64    `json:"earnings"`
-	TMU             float64    `json:"tmu"`
-	Code            string     `json:"code"`
-	AddressDeposit  string     `json:"addr_deposit"`
-	AddressWithdraw string     `json:"addr_withdraw"`
-	LastUpdated     time.Time  `json:"last_updated"`
-	TimeLock        *time.Time `json:"time_lock"`
-	IsFollower      bool       `json:"is_follower"`
-	IsMember        bool       `json:"is_member"`
-	MiningTime      time.Time  `json:"mining_time"`
-	Health          int64      `json:"health"`
-	Boosts          []*Boost   `json:"boosts"`
+	Earnings        float64      `json:"earnings"`
+	TMU             float64      `json:"tmu"`
+	Code            string       `json:"code"`
+	AddressDeposit  string       `json:"addr_deposit"`
+	AddressWithdraw string       `json:"addr_withdraw"`
+	LastUpdated     time.Time    `json:"last_updated"`
+	TimeLock        *time.Time   `json:"time_lock"`
+	IsFollower      bool         `json:"is_follower"`
+	IsMember        bool         `json:"is_member"`
+	MiningTime      time.Time    `json:"mining_time"`
+	Health          int64        `json:"health"`
+	Boosts          []*BoostItem `json:"boosts"`
 }
 
-type Boost struct {
+type BoostItem struct {
 	Name string `json:"name"`
 	Link string `json:"link"`
 }
