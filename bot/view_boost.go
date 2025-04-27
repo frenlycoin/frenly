@@ -4,6 +4,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 
 	"gopkg.in/macaron.v1"
 )
@@ -25,28 +26,28 @@ func viewBoost(ctx *macaron.Context) {
 		boosted := false
 
 		if po.ID != 0 {
-			if u.MiningTime.Before(po.CreatedAt) {
-				for _, p := range u.Boosts {
-					if p.ID == po.ID {
-						boosted = true
-					}
-				}
-
-				if !boosted {
-					u.MiningTime = po.CreatedAt
-					u.Boosts = nil
-					if err := db.Save(u).Error; err != nil {
-						loge(err)
-					}
-
-					err := db.Model(u).Association("Boosts").Append(po)
-					if err != nil {
-						loge(err)
-					}
-
-					log.Println("Saved mining time.")
+			// if u.MiningTime.Before(po.CreatedAt) {
+			for _, p := range u.Boosts {
+				if p.ID == po.ID {
+					boosted = true
 				}
 			}
+
+			if !boosted {
+				u.MiningTime = time.Now()
+				u.Boosts = nil
+				if err := db.Save(u).Error; err != nil {
+					loge(err)
+				}
+
+				err := db.Model(u).Association("Boosts").Append(po)
+				if err != nil {
+					loge(err)
+				}
+
+				log.Println("Saved mining time.")
+			}
+			// }
 		}
 	}
 

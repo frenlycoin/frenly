@@ -201,8 +201,12 @@ func (u *User) processTmuPayments() bool {
 func (u *User) getUnboosted() []*BoostItem {
 	var ub []*BoostItem
 
+	// if !u.isActive() {
+	// 	return ub
+	// }
+
 	var posts []*Post
-	db.Where("created_at > ?", u.MiningTime).Find(&posts)
+	db.Where("created_at > ?", time.Now().Add(time.Hour*(-48))).Find(&posts)
 
 	for _, p := range posts {
 		skip := false
@@ -236,7 +240,7 @@ func (u *User) health() int64 {
 		return health
 	}
 
-	bt := getBoostTasks(u.MiningTime)
+	bt := getBoostTasks(u.MiningTime.Add(time.Hour * (-48)))
 
 	// log.Println(prettyPrint(bt))
 
