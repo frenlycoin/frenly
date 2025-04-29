@@ -201,16 +201,17 @@ func (u *User) processTmuPayments() bool {
 func (u *User) getUnboosted() []*BoostItem {
 	var ub []*BoostItem
 
-	// if !u.isActive() {
-	// 	return ub
-	// }
-
 	var posts []*Post
 	db.Where("created_at > ?", time.Now().Add(time.Hour*(-48))).Find(&posts)
 
+	var boosts []*Boost
+	db.Where("user_id = ?", u.ID).Find(&boosts)
+
+	log.Println(len(boosts))
+
 	for _, p := range posts {
 		skip := false
-		for _, b := range u.Boosts {
+		for _, b := range boosts {
 			if b.ID == p.ID {
 				skip = true
 			}
@@ -242,11 +243,11 @@ func (u *User) health() int64 {
 
 	bt := getBoostTasks(u.MiningTime.Add(time.Hour * (-48)))
 
-	// log.Println(prettyPrint(bt))
+	log.Println(len(bt))
 
 	ub := u.getUnboosted()
 
-	// log.Println(prettyPrint(ub))
+	log.Println(len(ub))
 
 	if len(bt) == 0 || len(ub) == 0 {
 		return 100
