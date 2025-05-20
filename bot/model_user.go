@@ -212,7 +212,7 @@ func (u *User) getUnboosted() []*BoostItem {
 	for _, p := range posts {
 		skip := false
 		for _, b := range boosts {
-			if b.ID == p.ID {
+			if uint(b.PostID) == p.ID {
 				skip = true
 			}
 		}

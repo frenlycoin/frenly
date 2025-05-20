@@ -36,7 +36,7 @@ const (
 	MonitorTick = 10
 
 	// CacheTick interval in seconds
-	CacheTick = 10
+	CacheTick = 100
 
 	// PrizeTick interval in seconds
 	PrizeTick = 60
