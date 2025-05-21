@@ -40,7 +40,7 @@ func commandClaim(c telebot.Context) error {
 		ID: Group,
 	}
 
-	_, err = b.Send(rec, msg, telebot.NoPreview)
+	_, err = b.Send(rec, msg, telebot.NoPreview, telebot.Silent)
 	if err != nil {
 		loge(err)
 	}
