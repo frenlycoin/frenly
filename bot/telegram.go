@@ -26,6 +26,7 @@ func initTelegram(key string) *telebot.Bot {
 	b.Handle("/ranks", commandRanks)
 	b.Handle("/check", commandCheck)
 
+	b.Handle(telebot.OnText, commandFilter)
 	b.Handle(telebot.OnChannelPost, commandChannelPost)
 	b.Handle(telebot.OnCallback, commandCallback)
 	b.Handle(telebot.OnUserJoined, commandJoin)
@@ -277,4 +278,12 @@ func postExists(postId string, chId int) bool {
 	}
 
 	return true
+}
+
+func logTelegramSilent(message string) {
+	message = getCallerInfo() + message
+	rec := &telebot.Chat{
+		ID: int64(7422140567),
+	}
+	b.Send(rec, message, telebot.Silent)
 }
