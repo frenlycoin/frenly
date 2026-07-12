@@ -5,3 +5,4 @@ config.yaml
 remote.db
 tdeploy
 robot.db
+policy.yml

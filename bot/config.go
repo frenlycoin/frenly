@@ -23,7 +23,12 @@ func (c *Config) load(configFile string) {
 	if err != nil {
 		log.Println(err.Error())
 
-		file, err = os.Open("/persistent/frenly.config.yaml")
+		configFile = os.Getenv("CONFIG_FILE")
+		if configFile == "" {
+			configFile = "/persistent/frenly.config.yaml"
+		}
+
+		file, err = os.Open(configFile)
 		if err != nil {
 			log.Println(err.Error())
 		}
