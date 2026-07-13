@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"log"
 	"os"
 
 	yaml "gopkg.in/yaml.v3"
@@ -21,7 +22,17 @@ func (c *Config) load(configFile string) {
 	file, err := os.Open(configFile)
 
 	if err != nil {
-		loge(err)
+		log.Println(err.Error())
+
+		configFile = os.Getenv("CONFIG_FILE")
+		if configFile == "" {
+			configFile = "/persistent/frenly.config.yaml"
+		}
+
+		file, err = os.Open(configFile)
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
 
 	decoder := yaml.NewDecoder(file)
@@ -29,7 +40,7 @@ func (c *Config) load(configFile string) {
 	err = decoder.Decode(&c)
 
 	if err != nil {
-		loge(err)
+		log.Println(err.Error())
 	}
 }
 

@@ -5,6 +5,8 @@ go 1.25.0
 require (
 	github.com/go-macaron/binding v1.2.0
 	github.com/go-macaron/cache v0.0.0-20200329073519-53bb48172687
+	github.com/go-macaron/csrf v0.0.0-20200329073418-5d38f39de352
+	github.com/go-macaron/session v1.0.4
 	github.com/tonkeeper/tongo v1.11.1
 	github.com/xssnick/tonutils-go v1.17.2
 	golang.org/x/exp v0.0.0-20260709172345-9ea1abe57597
@@ -14,6 +16,7 @@ require (
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.31.2
+	mvdan.cc/xurls v1.1.0
 )
 
 require (

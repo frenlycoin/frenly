@@ -96,7 +96,7 @@ func (u *User) isFollower() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(NewsTest)
+	cb, err := b.ChatByID(News)
 	if err != nil {
 		// loge(err)
 		return false
@@ -166,7 +166,7 @@ func (u *User) processTmuPayments() bool {
 	// checkNewTmu(u)
 
 	if new >= 50000000 {
-		new *= 4
+		new = uint64(float64(new) * float64(3.3333333333))
 		u.TMU += new
 		now := time.Now()
 		u.TimeLock = &now
