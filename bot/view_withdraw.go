@@ -23,7 +23,7 @@ func viewWithdraw(ctx *macaron.Context) {
 			if err := db.Save(u).Error; err != nil {
 				loge(err)
 			} else {
-				send(amount, u.AddressWithdraw, conf.Seed)
+				// send(amount, u.AddressWithdraw, conf.Seed)
 
 				notify(fmt.Sprintf("Withdraw: %s (%.9f TON)", u.Name, float64(amount)/float64(Mul9)), Frenly)
 
