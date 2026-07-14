@@ -17,7 +17,8 @@ const (
 
 	News = int64(-1001717915246)
 
-	NewsDev = int64(-1002261097117)
+	// NewsDev = int64(-1002261097117)
+	NewsDev = int64(-1002557052681)
 
 	NewsTest = int64(-1002478203272)
 

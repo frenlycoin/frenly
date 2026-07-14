@@ -96,7 +96,15 @@ func (u *User) isFollower() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(News)
+	var channel int64
+
+	if conf.Dev {
+		channel = NewsDev
+	} else {
+		channel = News
+	}
+
+	cb, err := b.ChatByID(channel)
 	if err != nil {
 		// loge(err)
 		return false
