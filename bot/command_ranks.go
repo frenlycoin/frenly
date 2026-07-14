@@ -15,7 +15,7 @@ func commandRanks(c telebot.Context) error {
 	db.Order("tmu desc").Find(&users)
 
 	for i, u := range users {
-		if i < 10 {
+		if i < 20 {
 			if user.TelegramId == u.TelegramId {
 				showCaller = false
 				tmu := float64(u.TMU) / float64(Mul9)
