@@ -109,6 +109,10 @@ After that, try claiming reward again.`
 
 	lBoostTooOld = `This boost is too old to be used. To <b><u>receive full reward</u></b>, use available boosts each time before daily mining cycle reset.`
 
+	lExchangeCompleted = `<b><u>Exchange Completed</u></b> 🚀
+
+User %s exchanged %.9f FREN for %.9f TON.`
+
 	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
 
 User %s just cashed out %.9f TON.`
