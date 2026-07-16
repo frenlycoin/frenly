@@ -162,10 +162,20 @@ func (u *User) isActive() bool {
 
 func (u *User) processTmuPayments() bool {
 	new := checkNewTmu(u)
-	// checkNewTmu(u)
 
 	if new >= 50000000 {
-		new = uint64(float64(new) * float64(3.3333333333))
+		priceKv := &KeyValue{Key: "dexLastPrice"}
+		if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err != nil {
+			loge(err)
+			return false
+		}
+
+		price := float64(priceKv.ValueInt) / float64(Mul9)
+		if price <= 0 {
+			price = 1
+		}
+
+		new = uint64(float64(new) / price)
 		u.TMU += new
 		now := time.Now()
 		u.TimeLock = &now
