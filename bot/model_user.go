@@ -265,7 +265,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 
 	res := db.Where(&User{TelegramId: c.Sender().ID}).Attrs(
 		&User{
-			TMU:              10000000,
+			TMU:              100000000000,
 			Code:             code,
 			AddressWithdraw:  code,
 			AddressDeposit:   code,
@@ -321,7 +321,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 
 	res := db.Preload("Referrer").Preload("Boosts").Where(&User{TelegramId: tgid}).Attrs(
 		&User{
-			TMU:              10000000,
+			TMU:              100000000000,
 			Code:             code,
 			AddressWithdraw:  code,
 			AddressDeposit:   code,
@@ -371,4 +371,38 @@ func getUser(tgid int64) *User {
 	db.Preload("Referrer").Preload("Boosts").First(u, &User{TelegramId: tgid})
 
 	return u
+}
+
+func MigrateTMU() {
+	logs("Starting TMU migration: multiplying all user TMU by 1000...")
+
+	var users []*User
+	if err := db.Find(&users).Error; err != nil {
+		loge(err)
+		logs("Failed to load users for TMU migration")
+		return
+	}
+
+	count := 0
+	for _, user := range users {
+		if user.TMU >= 100000000 {
+			user.TMU = user.TMU * 1000
+			if err := db.Save(user).Error; err != nil {
+				loge(err)
+				log.Printf("Failed to save user %d (ID: %d)", user.TelegramId, user.ID)
+			} else {
+				count++
+			}
+		} else {
+			user.TMU = user.TMU * 10000
+			if err := db.Save(user).Error; err != nil {
+				loge(err)
+				log.Printf("Failed to save user %d (ID: %d)", user.TelegramId, user.ID)
+			} else {
+				count++
+			}
+		}
+	}
+
+	logs(fmt.Sprintf("TMU migration completed: %d/%d users updated", count, len(users)))
 }
