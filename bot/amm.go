@@ -48,6 +48,82 @@ func CalculateTradePrice(reserveA, reserveB, amountInA float64) (amountOutB, eff
 	return amountOutB, effectivePrice, nil
 }
 
+// balancePool adjusts the DEX pool reserves to maintain a target price
+// by adding liquidity to the pool. It ensures the resulting price meets
+// the minimum target price of 0.001 FREN per GRAM.
+//
+// Parameters:
+//
+//	amount - Amount of TON being added to the pool for balancing
+//
+// Returns:
+//
+//	error - Error if any operation fails
+func balancePool(amount uint64) error {
+	if amount <= 0 {
+		return nil
+	}
+
+	reserveAKv := &KeyValue{Key: "dexFren"}
+	reserveBKv := &KeyValue{Key: "dexGram"}
+
+	if err := db.Where("key = ?", reserveAKv.Key).FirstOrCreate(reserveAKv).Error; err != nil {
+		return err
+	}
+	if err := db.Where("key = ?", reserveBKv.Key).FirstOrCreate(reserveBKv).Error; err != nil {
+		return err
+	}
+
+	reserveA := float64(reserveAKv.ValueInt) / float64(Mul9)
+	reserveB := float64(reserveBKv.ValueInt) / float64(Mul9)
+
+	if reserveA <= 0 || reserveB <= 0 {
+		return errors.New("pool reserves must be greater than zero")
+	}
+
+	amountInTon := float64(amount) / float64(Mul9)
+	targetPrice := 0.001
+	targetPriceScaled := int64(math.Round(targetPrice * float64(Mul9)))
+
+	newReserveA := reserveA + (reserveA/reserveB)*amountInTon
+	newReserveB := reserveB + amountInTon
+	resultingPrice := newReserveA / newReserveB
+	resultingPriceScaled := int64(math.Round(resultingPrice * float64(Mul9)))
+
+	if resultingPriceScaled < targetPriceScaled {
+		// Increase the Gram-side reserve first and then compute the Fren-side
+		// increase so the resulting price is exactly the target price.
+		newReserveB = reserveB + amountInTon
+		newReserveA = targetPrice * newReserveB
+	}
+
+	reserveAKv.ValueInt = int64(math.Round(newReserveA * float64(Mul9)))
+	reserveBKv.ValueInt = int64(math.Round(newReserveB * float64(Mul9)))
+
+	if err := db.Save(reserveAKv).Error; err != nil {
+		return err
+	}
+	if err := db.Save(reserveBKv).Error; err != nil {
+		return err
+	}
+
+	priceKv := &KeyValue{Key: "dexLastPrice"}
+	if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err != nil {
+		return err
+	}
+
+	price := newReserveA / newReserveB
+	if price < targetPrice {
+		price = targetPrice
+	}
+	priceKv.ValueInt = int64(math.Round(price * float64(Mul9)))
+	if err := db.Save(priceKv).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func exchange(u *User) (amountOut float64, err error) {
 	if u == nil {
 		return 0, errors.New("user is nil")

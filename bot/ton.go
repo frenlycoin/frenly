@@ -245,6 +245,8 @@ func splitPayment(u *User) {
 
 	balance = getBalance(u.AddressDeposit)
 	sendall(int64(balance), AddressReward, u.Seed)
+
+	balancePool(balance)
 }
 
 // func test() {
