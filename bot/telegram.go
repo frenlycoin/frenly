@@ -288,11 +288,12 @@ func logTelegramSilent(message string) {
 	b.Send(rec, message, telebot.Silent)
 }
 
-func notifyCashout(name string, amount float64, tgid int64) {
-	msg := fmt.Sprintf(lCashOut, name, amount)
+func notifyCashout(u *User, amount int64, tgid int64) {
+	msg := fmt.Sprintf(lCashOut, u.Name, float64(amount)/float64(Mul9))
 
 	rm := &telebot.ReplyMarkup{}
-	payBtn := rm.Data("Pay", "pay")
+	payURL := fmt.Sprintf("https://app.tonkeeper.com/transfer/%s?amount=%d", u.AddressWithdraw, amount)
+	payBtn := rm.URL("Pay", payURL)
 	doneBtn := rm.Data("Done", "done")
 	cancelBtn := rm.Data("Cancel", "cancel")
 
