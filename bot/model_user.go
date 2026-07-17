@@ -19,6 +19,7 @@ type User struct {
 	Seed             string `gorm:"size:255"`
 	TMU              uint64
 	Balance          uint64
+	PayoutAmount     uint64
 	LastUpdated      time.Time
 	TimeLock         *time.Time
 	ReferrerID       *uint

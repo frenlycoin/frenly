@@ -113,6 +113,10 @@ After that, try claiming reward again.`
 
 User %s exchanged %.9f FREN for %.9f TON.`
 
+	lTradeCanceled = `<b><u>Trade Canceled</u></b> 🚀
+
+Trade canceled. Dex state restored from backup values.`
+
 	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
 
 User %s just cashed out %.9f TON.`

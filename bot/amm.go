@@ -71,6 +71,36 @@ func exchange(u *User) (amountOut float64, err error) {
 	reserveA := float64(reserveAKv.ValueInt) / float64(Mul9)
 	reserveB := float64(reserveBKv.ValueInt) / float64(Mul9)
 
+	oldReserveAKv := &KeyValue{Key: reserveAKv.Key + "Old"}
+	oldReserveBKv := &KeyValue{Key: reserveBKv.Key + "Old"}
+	if err = db.Where("key = ?", oldReserveAKv.Key).FirstOrCreate(oldReserveAKv).Error; err != nil {
+		return 0, err
+	}
+	if err = db.Where("key = ?", oldReserveBKv.Key).FirstOrCreate(oldReserveBKv).Error; err != nil {
+		return 0, err
+	}
+	oldReserveAKv.ValueInt = reserveAKv.ValueInt
+	oldReserveBKv.ValueInt = reserveBKv.ValueInt
+	if err = db.Save(oldReserveAKv).Error; err != nil {
+		return 0, err
+	}
+	if err = db.Save(oldReserveBKv).Error; err != nil {
+		return 0, err
+	}
+
+	priceKv := &KeyValue{Key: "dexLastPrice"}
+	if err = db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err != nil {
+		return 0, err
+	}
+	oldPriceKv := &KeyValue{Key: priceKv.Key + "Old"}
+	if err = db.Where("key = ?", oldPriceKv.Key).FirstOrCreate(oldPriceKv).Error; err != nil {
+		return 0, err
+	}
+	oldPriceKv.ValueInt = priceKv.ValueInt
+	if err = db.Save(oldPriceKv).Error; err != nil {
+		return 0, err
+	}
+
 	amountOut, effectivePrice, err := CalculateTradePrice(reserveA, reserveB, amountIn)
 	if err != nil {
 		return 0, err
@@ -83,10 +113,6 @@ func exchange(u *User) (amountOut float64, err error) {
 	reserveAKv.ValueInt = newReserveA
 	reserveBKv.ValueInt = newReserveB
 
-	priceKv := &KeyValue{Key: "dexLastPrice"}
-	if err = db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err != nil {
-		return 0, err
-	}
 	priceKv.ValueInt = lastPrice
 
 	if err = db.Save(reserveAKv).Error; err != nil {
@@ -103,6 +129,7 @@ func exchange(u *User) (amountOut float64, err error) {
 	u.LastUpdated = time.Now()
 	u.CycleCountTotal += u.CycleCount
 	u.CycleCount = 1
+	u.PayoutAmount = uint64(math.Round(amountIn * float64(Mul9)))
 	if err = db.Save(u).Error; err != nil {
 		return 0, err
 	}
