@@ -287,3 +287,22 @@ func logTelegramSilent(message string) {
 	}
 	b.Send(rec, message, telebot.Silent)
 }
+
+func notifyCashout(name string, amount float64, tgid int64) {
+	msg := fmt.Sprintf(lCashOut, name, amount)
+
+	rm := &telebot.ReplyMarkup{}
+	payBtn := rm.Data("Pay", "pay")
+	doneBtn := rm.Data("Done", "done")
+	cancelBtn := rm.Data("Cancel", "cancel")
+
+	rm.Inline(
+		rm.Row(payBtn, doneBtn, cancelBtn),
+	)
+
+	rec := &telebot.Chat{ID: tgid}
+	_, err := b.Send(rec, msg, rm, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+}

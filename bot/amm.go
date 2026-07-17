@@ -2,7 +2,6 @@ package bot
 
 import (
 	"errors"
-	"fmt"
 	"math"
 	"time"
 )
@@ -109,9 +108,11 @@ func exchange(u *User) (amountOut float64, err error) {
 	}
 
 	tonAmount := int64(math.Round(amountOut * float64(Mul9)))
-	frenAmount := int64(math.Round(amountIn * float64(Mul9)))
-	msg := fmt.Sprintf(lExchangeCompleted, u.Name, float64(frenAmount)/float64(Mul9), float64(tonAmount)/float64(Mul9))
-	notify(msg, GroupHall)
+	// frenAmount := int64(math.Round(amountIn * float64(Mul9)))
+	// msg := fmt.Sprintf(lExchangeCompleted, u.Name, float64(frenAmount)/float64(Mul9), float64(tonAmount)/float64(Mul9))
+
+	// notify(msg, GroupHall)
+	notifyCashout(u.Name, float64(tonAmount)/float64(Mul9), GroupHall)
 
 	return amountOut, nil
 }
