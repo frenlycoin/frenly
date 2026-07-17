@@ -48,17 +48,6 @@ func CalculateTradePrice(reserveA, reserveB, amountInA float64) (amountOutB, eff
 	return amountOutB, effectivePrice, nil
 }
 
-// balancePool adjusts the DEX pool reserves to maintain a target price
-// by adding liquidity to the pool. It ensures the resulting price meets
-// the minimum target price of 0.001 FREN per GRAM.
-//
-// Parameters:
-//
-//	amount - Amount of TON being added to the pool for balancing
-//
-// Returns:
-//
-//	error - Error if any operation fails
 func balancePool(amount uint64) error {
 	if amount <= 0 {
 		return nil
@@ -76,30 +65,45 @@ func balancePool(amount uint64) error {
 
 	reserveA := float64(reserveAKv.ValueInt) / float64(Mul9)
 	reserveB := float64(reserveBKv.ValueInt) / float64(Mul9)
-
 	if reserveA <= 0 || reserveB <= 0 {
 		return errors.New("pool reserves must be greater than zero")
 	}
 
 	amountInTon := float64(amount) / float64(Mul9)
 	targetPrice := 0.001
-	targetPriceScaled := int64(math.Round(targetPrice * float64(Mul9)))
+	remaining := amountInTon
 
-	newReserveA := reserveA + (reserveA/reserveB)*amountInTon
-	newReserveB := reserveB + amountInTon
-	resultingPrice := newReserveA / newReserveB
-	resultingPriceScaled := int64(math.Round(resultingPrice * float64(Mul9)))
-
-	if resultingPriceScaled < targetPriceScaled {
-		// Increase the Gram-side reserve first and then compute the Fren-side
-		// increase so the resulting price is exactly the target price.
-		newReserveB = reserveB + amountInTon
-		newReserveA = targetPrice * newReserveB
+	currentPrice := reserveB / reserveA
+	if currentPrice < targetPrice {
+		// First, add the incoming amount to the Gram-side reserve only until the
+		// target price is reached.
+		needToReachTarget := (targetPrice * reserveA) - reserveB
+		if needToReachTarget > 0 {
+			addToGram := math.Min(remaining, needToReachTarget)
+			reserveB += addToGram
+			remaining -= addToGram
+		}
 	}
 
-	reserveAKv.ValueInt = int64(math.Round(newReserveA * float64(Mul9)))
-	reserveBKv.ValueInt = int64(math.Round(newReserveB * float64(Mul9)))
+	if remaining > 0 {
+		// Once the target price is reached, keep the price constant by adding the
+		// remaining amount to the Gram-side reserve and the matching ratio to the
+		// Fren-side reserve based on the current state of both reserves.
+		if reserveB <= 0 {
+			return errors.New("gram reserve must be greater than zero")
+		}
+		currentPrice = reserveB / reserveA
+		if currentPrice <= 0 {
+			return errors.New("price must be greater than zero")
+		}
+		deltaB := remaining
+		deltaA := deltaB / currentPrice
+		reserveA += deltaA
+		reserveB += deltaB
+	}
 
+	reserveAKv.ValueInt = int64(math.Round(reserveA * float64(Mul9)))
+	reserveBKv.ValueInt = int64(math.Round(reserveB * float64(Mul9)))
 	if err := db.Save(reserveAKv).Error; err != nil {
 		return err
 	}
@@ -112,7 +116,7 @@ func balancePool(amount uint64) error {
 		return err
 	}
 
-	price := newReserveA / newReserveB
+	price := reserveB / reserveA
 	if price < targetPrice {
 		price = targetPrice
 	}
