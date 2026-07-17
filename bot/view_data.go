@@ -41,6 +41,11 @@ func viewData(ctx *macaron.Context) {
 			dr.TMU = float64(u.TMU) / float64(Mul9)
 			dr.Earnings = float64(u.rewards(true)) / float64(Mul9)
 			dr.LastUpdated = u.LastUpdated
+
+			priceKv := &KeyValue{Key: "dexLastPrice"}
+			if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err == nil {
+				dr.Price = priceKv.ValueInt
+			}
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
 			dr.IsMember = u.isMember()
@@ -71,6 +76,7 @@ type DataResponse struct {
 	MiningTime      time.Time  `json:"mining_time"`
 	Health          int64      `json:"health"`
 	Boosts          []*Boost   `json:"boosts"`
+	Price           int64      `json:"price"`
 }
 
 type Boost struct {
