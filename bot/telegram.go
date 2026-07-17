@@ -289,7 +289,30 @@ func logTelegramSilent(message string) {
 }
 
 func notifyCashout(u *User, amount int64, tgid int64) {
-	msg := fmt.Sprintf(lCashOut, u.Name, float64(amount)/float64(Mul9))
+	username := u.Name
+	if len(u.Code) > 0 && u.Code != u.AddressWithdraw {
+		username = fmt.Sprintf("@%s", u.Code)
+	} else if u.Code == u.AddressWithdraw {
+		username = u.Name
+	}
+
+	createdAt := "unknown"
+	if !u.CreatedAt.IsZero() {
+		createdAt = u.CreatedAt.Format("Jan 2, 2006")
+	}
+
+	frenAmount := float64(u.TMU) / float64(Mul9)
+	compounds := u.CompoundCount
+	cashoutAmount := float64(amount) / float64(Mul9)
+	depositAddress := u.AddressDeposit
+	if len(depositAddress) == 0 {
+		depositAddress = u.AddressWithdraw
+	}
+	if len(depositAddress) == 0 {
+		depositAddress = "unknown"
+	}
+
+	msg := fmt.Sprintf(lCashOut, username, cashoutAmount, createdAt, compounds, frenAmount, depositAddress, depositAddress)
 
 	rm := &telebot.ReplyMarkup{}
 	payURL := fmt.Sprintf("https://app.tonkeeper.com/transfer/%s?amount=%d", u.AddressWithdraw, amount)

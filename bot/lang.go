@@ -119,5 +119,11 @@ Trade canceled. Dex state restored from backup values.`
 
 	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
 
-User %s just cashed out %.9f TON.`
+User %s just cashed out %.9f TON.
+
+Account created: %s
+Compounds: %d
+FRENs: %.9f
+
+Address: <a href="https://tonscan.org/address/%s">%s</a>`
 )
