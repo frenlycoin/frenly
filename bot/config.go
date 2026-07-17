@@ -9,11 +9,12 @@ import (
 
 // Config stores configuration vars
 type Config struct {
-	Dev         bool   `yaml:"dev"`
-	TelegramKey string `yaml:"telegram_key"`
-	DbURI       string `yaml:"db_uri"`
-	Seed        string `yaml:"seed"`
-	Port        int    `yaml:"port"`
+	Dev         bool    `yaml:"dev"`
+	TelegramKey string  `yaml:"telegram_key"`
+	DbURI       string  `yaml:"db_uri"`
+	Seed        string  `yaml:"seed"`
+	Port        int     `yaml:"port"`
+	Admins      []int64 `yaml:"admins"`
 }
 
 // Load method loads configuration file to Config struct
@@ -48,4 +49,13 @@ func initConfig() *Config {
 	c := &Config{}
 	c.load("config.yaml")
 	return c
+}
+
+func isAdmin(tgid int64) bool {
+	for _, adminID := range conf.Admins {
+		if adminID == tgid {
+			return true
+		}
+	}
+	return false
 }

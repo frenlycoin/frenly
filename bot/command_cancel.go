@@ -9,6 +9,14 @@ func commandCancel(c telebot.Context) error {
 		return nil
 	}
 
+	if c.Sender() != nil && !isAdmin(c.Sender().ID) {
+		_, err := b.Send(c.Message().Chat, "Forbidden. Only admins are allowed to click this button.", telebot.NoPreview)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
 	keys := []string{"dexFren", "dexGram", "dexLastPrice"}
 	for _, key := range keys {
 		mainKv := &KeyValue{Key: key}
