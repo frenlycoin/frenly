@@ -16,7 +16,7 @@ func commandStats(c telebot.Context) error {
 		loge(err)
 	}
 
-	msg := fmt.Sprintf(lStats, cch.StatsCache.Miners, cch.StatsCache.ActiveMiners, cch.StatsCache.TMU, cch.StatsCache.RewardTMU, price)
+	msg := fmt.Sprintf(lStats, cch.StatsCache.Miners, cch.StatsCache.ActiveMiners, formatNumber(float64(cch.StatsCache.TMU)), formatNumber(float64(cch.StatsCache.RewardTMU)), formatNumber(price))
 
 	log.Println(c.Chat().ID)
 

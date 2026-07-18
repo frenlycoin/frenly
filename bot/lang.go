@@ -21,9 +21,9 @@ Every 24 hours, you need to restart your daily mining cycle and you will get not
 
 <b>Miners:</b> <code>%d</code>
 <b>Active Miners:</b> <code>%d</code>
-<b>Staked FREN:</b> <code>%.9f</code>
-<b>Reward FREN:</b> <code>%.9f</code>
-<b>FREN Price:</b> <code>%.9f GRAM</code>`
+<b>Staked FREN:</b> <code>%s</code>
+<b>Reward FREN:</b> <code>%s</code>
+<b>FREN Price:</b> <code>%s GRAM</code>`
 
 	lRanks = "🔵 <b><u>Frenly App Rankings</u></b>\n"
 
