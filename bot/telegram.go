@@ -312,7 +312,7 @@ func notifyCashout(u *User, amount int64, tgid int64) {
 		depositAddress = "unknown"
 	}
 
-	msg := fmt.Sprintf(lCashOut, username, cashoutAmount, createdAt, compounds, frenAmount, depositAddress, depositAddress)
+	msg := fmt.Sprintf(lCashOut, username, cashoutAmount, createdAt, u.CycleCountTotal, compounds, frenAmount, depositAddress, depositAddress)
 
 	rm := &telebot.ReplyMarkup{}
 	payURL := fmt.Sprintf("https://app.tonkeeper.com/transfer/%s?amount=%d", u.AddressWithdraw, amount)

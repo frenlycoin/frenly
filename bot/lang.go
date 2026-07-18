@@ -123,6 +123,7 @@ Trade canceled. Dex state restored from backup values.`
 User %s just cashed out %.9f TON.
 
 Account created: %s
+Cycles: %d
 Compounds: %d
 FRENs: %.9f
 
