@@ -106,9 +106,7 @@ func getRestartButtonChannel() *telebot.ReplyMarkup {
 }
 
 func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
-	kv := &KeyValue{Key: "restartPostId"}
-	db.FirstOrCreate(kv, kv)
-	link := fmt.Sprintf("https://t.me/FrenlyNews/%d", kv.ValueInt)
+	link := "https://t.me/FrenlyRobot?start=restart"
 
 	rm := &telebot.ReplyMarkup{}
 	btn1 := rm.URL("Boost Miner", boostLink)
@@ -198,7 +196,7 @@ func notifyEnd(u *User) {
 		rb = getRestartButtonBoost(unb[0].Link)
 		msg += fmt.Sprintf("\n\n<b><u>Your miner's health is at %d%%!</u></b>\n\n<b><u>Boost your miner by clicking the button bellow and then boost button under each post that bot leads you to! This needs to be done to collect full reward.</u></b>", u.health())
 	} else {
-		rb = getRestartButtonChannel()
+		rb = getRestartButton()
 	}
 
 	rec := &telebot.Chat{
