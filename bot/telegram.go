@@ -330,3 +330,31 @@ func notifyCashout(u *User, amount int64, tgid int64) {
 		loge(err)
 	}
 }
+
+func notifyRestartInactive(msg string, tgid int64) {
+	rb := getRestartButton()
+	rec := &telebot.Chat{
+		ID: tgid,
+	}
+	_, err := b.Send(rec, msg, rb, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+}
+
+func notifyInactive() {
+	var users []*User
+	if err := db.Find(&users).Error; err != nil {
+		loge(err)
+		return
+	}
+
+	for _, u := range users {
+		time.Sleep(time.Second)
+		if u.isActive() || u.BotBlocked {
+			continue
+		}
+		notifyRestartInactive(lPayoutsEnabled, u.TelegramId)
+		notify(fmt.Sprintf("User %s is inactive, sent restart notification.", u.Name), Frenly)
+	}
+}

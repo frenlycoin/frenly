@@ -41,5 +41,7 @@ func Start() {
 
 	initTemp()
 
+	// go notifyInactive()
+
 	b.Start()
 }
