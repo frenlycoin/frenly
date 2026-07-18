@@ -127,4 +127,8 @@ Compounds: %d
 FRENs: %.9f
 
 Address: <a href="https://tonscan.org/address/%s">%s</a>`
+
+	lCashOutPublic = `<b><u>User Cashed Out</u></b> 🚀
+
+User %s just cashed out %.9f GRAM.`
 )

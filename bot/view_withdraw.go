@@ -2,6 +2,7 @@ package bot
 
 import (
 	"fmt"
+	"math"
 
 	"gopkg.in/macaron.v1"
 )
@@ -15,11 +16,16 @@ func viewWithdraw(ctx *macaron.Context) {
 		amount := int64((u.rewards(true) / 1000))
 
 		if amount > 0 {
-			exchange(u)
+			amountOut, err := exchange(u)
+			if err != nil {
+				loge(err)
+			} else {
+				tonAmount := int64(math.Round(amountOut * float64(Mul9)))
 
-			notify(fmt.Sprintf("Withdraw: %s (%.9f TON)", u.Name, float64(amount)/float64(Mul9)), Frenly)
+				notifyCashout(u, tonAmount, Frenly)
 
-			notify(fmt.Sprintf(lCashOut, u.Name, float64(amount)/float64(Mul9)), Group)
+				notify(fmt.Sprintf(lCashOutPublic, u.Name, float64(tonAmount)/float64(Mul9)), Group)
+			}
 		}
 	}
 
