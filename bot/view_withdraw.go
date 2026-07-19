@@ -24,7 +24,7 @@ func viewWithdraw(ctx *macaron.Context) {
 
 				notifyCashout(u, tonAmount, Frenly)
 
-				notify(fmt.Sprintf(lCashOutPublic, u.Name, float64(tonAmount)/float64(Mul9)), Group)
+				notify(fmt.Sprintf(lCashOutPublic, u.Name, formatNumber(float64(tonAmount)/float64(Mul9))), Group)
 			}
 		}
 	}

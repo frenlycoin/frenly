@@ -11,11 +11,11 @@ Every 24 hours, you need to restart your daily mining cycle and you will get not
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 
-	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %.9f new referral FREN."
+	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %s new referral FREN."
 
 	lNewUser = "<b><u>New Frenly App user.</u></b> 🚀"
 
-	lNewMint = "<b><u>New FREN mint:</u> <code>%.9f FREN (%s)</code></b> 🚀"
+	lNewMint = "<b><u>New FREN mint:</u> <code>%s FREN (%s)</code></b> 🚀"
 
 	lStats = `🔵 <b><u>Frenly App Basic Stats</u></b>
 
@@ -120,18 +120,18 @@ Trade canceled. Dex state restored from backup values.`
 
 	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
 
-User %s just cashed out %.9f TON.
+User %s just cashed out %s TON.
 
 Account created: %s
 Cycles: %d
 Compounds: %d
-FRENs: %.9f
+FRENs: %s
 
 Address: <a href="https://tonscan.org/address/%s">%s</a>`
 
 	lCashOutPublic = `<b><u>User Cashed Out</u></b> 🚀
 
-User %s just cashed out %.9f GRAM.`
+User %s just cashed out %s GRAM.`
 
 	lPayoutsEnabled = `<b><u>Payouts are now enabled. Continue mining now!</u></b> 🚀`
 )
