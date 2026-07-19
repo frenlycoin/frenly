@@ -46,9 +46,12 @@ func (u *User) rewards(checkFollow bool) uint64 {
 
 	r = uint64(time.Since(u.LastUpdated).Seconds() * float64(u.TMU) / (2400 * 3600))
 
-	cycleIndex := float64(u.CycleCount+1) / float64(time.Since(u.MiningTime).Hours()/24)
+	cycleIndex := float64(u.CycleCount+1) / float64(time.Since(u.LastUpdated).Hours()/24)
+
 	if cycleIndex > 1 {
 		cycleIndex = 1
+	} else if cycleIndex < 0.01 {
+		cycleIndex = 0.01
 	}
 
 	// log.Printf("cycle index: %s %.9f", u.Name, cycleIndex)
