@@ -134,4 +134,15 @@ Address: <a href="https://tonscan.org/address/%s">%s</a>`
 User %s just cashed out %s GRAM.`
 
 	lPayoutsEnabled = `<b><u>Payouts are now enabled. Continue mining now!</u></b> 🚀`
+
+	lUserInfo = `<b><u>User Information</u></b>
+
+Username: %s
+Account Created: %s
+Total Cycles: %d
+Compounds: %d
+FREN Balance: %s
+
+Deposit Address: <a href="https://tonscan.org/address/%s">%s</a>
+Withdraw Address: <a href="https://tonscan.org/address/%s">%s</a>`
 )
