@@ -137,11 +137,15 @@ User %s just cashed out %s GRAM.`
 
 	lUserInfo = `<b><u>User Information</u></b>
 
+Name: %s
+
 Username: %s
 Account Created: %s
 Total Cycles: %d
 Compounds: %d
-FREN Balance: %s
+FRENs Balance: %s
+FRENs Rewards: %s
+Health: %d%%
 
 Deposit Address: <a href="https://tonscan.org/address/%s">%s</a>
 Withdraw Address: <a href="https://tonscan.org/address/%s">%s</a>`
