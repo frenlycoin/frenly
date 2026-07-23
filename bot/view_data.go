@@ -35,6 +35,11 @@ func viewData(ctx *macaron.Context) {
 			dr.TMU = float64(u.TMU) / float64(Mul9)
 			dr.Earnings = float64(u.rewards(true)) / float64(Mul9)
 			dr.LastUpdated = u.LastUpdated
+
+			priceKv := &KeyValue{Key: "dexLastPrice"}
+			if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err == nil {
+				dr.Price = priceKv.ValueInt
+			}
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
 			dr.IsMember = u.isMember()
@@ -50,18 +55,21 @@ func viewData(ctx *macaron.Context) {
 }
 
 type DataResponse struct {
-	Earnings        float64      `json:"earnings"`
-	TMU             float64      `json:"tmu"`
-	Code            string       `json:"code"`
-	AddressDeposit  string       `json:"addr_deposit"`
-	AddressWithdraw string       `json:"addr_withdraw"`
-	LastUpdated     time.Time    `json:"last_updated"`
-	TimeLock        *time.Time   `json:"time_lock"`
-	IsFollower      bool         `json:"is_follower"`
-	IsMember        bool         `json:"is_member"`
-	MiningTime      time.Time    `json:"mining_time"`
-	Health          int64        `json:"health"`
-	Boosts          []*BoostItem `json:"boosts"`
+	Earnings        float64    `json:"earnings"`
+	TMU             float64    `json:"tmu"`
+	Code            string     `json:"code"`
+	AddressDeposit  string     `json:"addr_deposit"`
+	AddressWithdraw string     `json:"addr_withdraw"`
+	LastUpdated     time.Time  `json:"last_updated"`
+	TimeLock        *time.Time `json:"time_lock"`
+	IsFollower      bool       `json:"is_follower"`
+	IsMember        bool       `json:"is_member"`
+	CycleActive     bool       `json:"cycle_active"`
+	CycleCount      uint64     `json:"cycle_count"`
+	MiningTime      time.Time  `json:"mining_time"`
+	Health          int64      `json:"health"`
+	Boosts          []*Boost   `json:"boosts"`
+	Price           int64      `json:"price"`
 }
 
 type BoostItem struct {

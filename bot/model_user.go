@@ -19,6 +19,7 @@ type User struct {
 	Seed             string `gorm:"size:255"`
 	TMU              uint64
 	Balance          uint64
+	PayoutAmount     uint64
 	LastUpdated      time.Time
 	TimeLock         *time.Time
 	ReferrerID       *uint
@@ -45,9 +46,12 @@ func (u *User) rewards(checkFollow bool) uint64 {
 
 	r = uint64(time.Since(u.LastUpdated).Seconds() * float64(u.TMU) / (2400 * 3600))
 
-	cycleIndex := float64(u.CycleCount+1) / float64(time.Since(u.MiningTime).Hours()/24)
+	cycleIndex := float64(u.CycleCount+1) / float64(time.Since(u.LastUpdated).Hours()/24)
+
 	if cycleIndex > 1 {
 		cycleIndex = 1
+	} else if cycleIndex < 0.01 {
+		cycleIndex = 0.01
 	}
 
 	// log.Printf("cycle index: %s %.9f", u.Name, cycleIndex)
@@ -171,10 +175,20 @@ func (u *User) isActive() bool {
 
 func (u *User) processTmuPayments() bool {
 	new := checkNewTmu(u)
-	// checkNewTmu(u)
 
 	if new >= 50000000 {
-		new = uint64(float64(new) * float64(3.3333333333))
+		priceKv := &KeyValue{Key: "dexLastPrice"}
+		if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err != nil {
+			loge(err)
+			return false
+		}
+
+		price := float64(priceKv.ValueInt) / float64(Mul9)
+		if price <= 0 {
+			price = 1
+		}
+
+		new = uint64(float64(new) / price)
 		u.TMU += new
 		now := time.Now()
 		u.TimeLock = &now
@@ -193,10 +207,10 @@ func (u *User) processTmuPayments() bool {
 			if err := db.Save(r).Error; err != nil {
 				loge(err)
 			}
-			notify(fmt.Sprintf(lNewRefFREN, float64((new*25/100))/float64(Mul9)), r.TelegramId)
+			notify(fmt.Sprintf(lNewRefFREN, formatNumber(float64((new*25/100))/float64(Mul9))), r.TelegramId)
 		}
 
-		notify(fmt.Sprintf(lNewMint, float64(new)/float64(Mul9), u.Name), GroupHall)
+		notify(fmt.Sprintf(lNewMint, formatNumber(float64(new)/float64(Mul9)), u.Name), GroupHall)
 
 		go splitPayment(u)
 
@@ -284,7 +298,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 
 	res := db.Where(&User{TelegramId: c.Sender().ID}).Attrs(
 		&User{
-			TMU:              10000000,
+			TMU:              100000000000,
 			Code:             code,
 			AddressWithdraw:  code,
 			AddressDeposit:   code,
@@ -340,7 +354,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 
 	res := db.Preload("Referrer").Preload("Boosts").Where(&User{TelegramId: tgid}).Attrs(
 		&User{
-			TMU:              10000000,
+			TMU:              100000000000,
 			Code:             code,
 			AddressWithdraw:  code,
 			AddressDeposit:   code,
@@ -398,4 +412,38 @@ func getUserWithBoosts(tgid int64) *User {
 	db.Preload("Referrer").Preload("Boosts").First(u, &User{TelegramId: tgid})
 
 	return u
+}
+
+func MigrateTMU() {
+	logs("Starting TMU migration: multiplying all user TMU by 1000...")
+
+	var users []*User
+	if err := db.Find(&users).Error; err != nil {
+		loge(err)
+		logs("Failed to load users for TMU migration")
+		return
+	}
+
+	count := 0
+	for _, user := range users {
+		if user.TMU >= 100000000 {
+			user.TMU = user.TMU * 1000
+			if err := db.Save(user).Error; err != nil {
+				loge(err)
+				log.Printf("Failed to save user %d (ID: %d)", user.TelegramId, user.ID)
+			} else {
+				count++
+			}
+		} else {
+			user.TMU = user.TMU * 10000
+			if err := db.Save(user).Error; err != nil {
+				loge(err)
+				log.Printf("Failed to save user %d (ID: %d)", user.TelegramId, user.ID)
+			} else {
+				count++
+			}
+		}
+	}
+
+	logs(fmt.Sprintf("TMU migration completed: %d/%d users updated", count, len(users)))
 }

@@ -12,6 +12,15 @@ import (
 func commandFilter(c telebot.Context) error {
 	var err error
 	m := c.Message()
+
+	// Call commandUserInfo if message is private and forwarded
+	if m.Private() && m.IsForwarded() {
+		err = commandUserInfo(c)
+		if err != nil {
+			logs(err.Error())
+		}
+	}
+
 	text := c.Message().Text
 
 	log.Println(text)

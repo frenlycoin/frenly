@@ -15,14 +15,14 @@ func commandRanks(c telebot.Context) error {
 	db.Order("tmu desc").Find(&users)
 
 	for i, u := range users {
-		if i < 10 {
+		if i < 20 {
 			if user.TelegramId == u.TelegramId {
 				showCaller = false
 				tmu := float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f FREN (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%s FREN (%d)</code>", i+1, u.Name, formatNumber(tmu), u.CompoundCount)
 			} else {
 				tmu := float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FREN (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%s FREN (%d)</code>", i+1, u.Name, formatNumber(tmu), u.CompoundCount)
 			}
 		}
 	}
@@ -38,19 +38,19 @@ func commandRanks(c telebot.Context) error {
 					u = users[i-1]
 
 					tmu = float64(u.TMU) / float64(Mul9)
-					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FREN (%d)</code>", i, u.Name, tmu, u.CompoundCount)
+					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%s FREN (%d)</code>", i, u.Name, formatNumber(tmu), u.CompoundCount)
 				}
 
 				u = users[i]
 
 				tmu = float64(u.TMU) / float64(Mul9)
-				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%.9f FREN (%d)</code>", i+1, u.Name, tmu, u.CompoundCount)
+				msg += fmt.Sprintf("\n<b><i>%d - %s</i></b> - <code>%s FREN (%d)</code>", i+1, u.Name, formatNumber(tmu), u.CompoundCount)
 
 				if i < len(users) {
 					u = users[i+1]
 
 					tmu = float64(u.TMU) / float64(Mul9)
-					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%.9f FREN (%d)</code>", i+2, u.Name, tmu, u.CompoundCount)
+					msg += fmt.Sprintf("\n<b>%d - %s</b> - <code>%s FREN (%d)</code>", i+2, u.Name, formatNumber(tmu), u.CompoundCount)
 				}
 			}
 		}

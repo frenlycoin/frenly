@@ -11,18 +11,19 @@ Every 24 hours, you need to restart your daily mining cycle and you will get not
 
 	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
 
-	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %.9f new referral FREN."
+	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %s new referral FREN."
 
 	lNewUser = "<b><u>New Frenly App user.</u></b> 🚀"
 
-	lNewMint = "<b><u>New FREN mint:</u> <code>%.9f FREN (%s)</code></b> 🚀"
+	lNewMint = "<b><u>New FREN mint:</u> <code>%s FREN (%s)</code></b> 🚀"
 
 	lStats = `🔵 <b><u>Frenly App Basic Stats</u></b>
 
 <b>Miners:</b> <code>%d</code>
 <b>Active Miners:</b> <code>%d</code>
-<b>Staked FREN:</b> <code>%.9f</code>
-<b>Reward FREN:</b> <code>%.9f</code>`
+<b>Staked FREN:</b> <code>%s</code>
+<b>Reward FREN:</b> <code>%s</code>
+<b>FREN Price:</b> <code>%s GRAM</code>`
 
 	lRanks = "🔵 <b><u>Frenly App Rankings</u></b>\n"
 
@@ -109,7 +110,43 @@ After that, try claiming reward again.`
 
 	lBoostTooOld = `This boost is too old to be used. To <b><u>receive full reward</u></b>, use available boosts each time before daily mining cycle reset.`
 
+	lExchangeCompleted = `<b><u>Exchange Completed</u></b> 🚀
+
+User %s exchanged %.9f FREN for %.9f TON.`
+
+	lTradeCanceled = `<b><u>Trade Canceled</u></b> 🚀
+
+Trade canceled. Dex state restored from backup values.`
+
 	lCashOut = `<b><u>User Cashed Out</u></b> 🚀
 
-User %s just cashed out %.9f TON.`
+User %s just cashed out %s TON.
+
+Account created: %s
+Cycles: %d
+Compounds: %d
+FRENs: %s
+
+Address: <a href="https://tonscan.org/address/%s">%s</a>`
+
+	lCashOutPublic = `<b><u>User Cashed Out</u></b> 🚀
+
+User %s just cashed out %s GRAM.`
+
+	lPayoutsEnabled = `<b><u>Payouts are now enabled. Continue mining now!</u></b> 🚀`
+
+	lUserInfo = `<b><u>User Information</u></b>
+
+Name: %s
+
+Username: %s
+Account Created: %s
+Total Cycles: %d
+Compounds: %d
+FRENs Balance: %s
+FRENs Rewards: %s
+Health: %d%%
+
+Deposit Address: <a href="https://tonscan.org/address/%s">%s</a>
+Withdraw Address: <a href="https://tonscan.org/address/%s">%s</a>`
 )

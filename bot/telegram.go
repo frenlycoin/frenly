@@ -49,14 +49,14 @@ func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
 }
 
 func notifyRestart() {
-	mb := getRestartButton()
+	// mb := getRestartButton()
 	rec := &telebot.Chat{
 		ID: News,
 	}
 
 	msg := lRestartMining
 
-	m, err := b.Send(rec, msg, mb, telebot.Silent)
+	m, err := b.Send(rec, msg, telebot.Silent)
 	if err != nil {
 		loge(err)
 	}
@@ -106,9 +106,7 @@ func getRestartButtonChannel() *telebot.ReplyMarkup {
 }
 
 func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
-	kv := &KeyValue{Key: "restartPostId"}
-	db.FirstOrCreate(kv, kv)
-	link := fmt.Sprintf("https://t.me/FrenlyNews/%d", kv.ValueInt)
+	link := "https://t.me/FrenlyRobot?start=restart"
 
 	rm := &telebot.ReplyMarkup{}
 	btn1 := rm.URL("Boost Miner", boostLink)
@@ -202,7 +200,7 @@ func notifyEnd(u *User) {
 		rb = getRestartButtonBoost(unb[0].Link)
 		msg += fmt.Sprintf("\n\n<b><u>Your miner's health is at %d%%!</u></b>\n\n<b><u>Boost your miner by clicking the button bellow and then boost button under each post that bot leads you to! This needs to be done to collect full reward.</u></b>", u.health())
 	} else {
-		rb = getRestartButtonChannel()
+		rb = getRestartButton()
 	}
 
 	rec := &telebot.Chat{
@@ -290,4 +288,75 @@ func logTelegramSilent(message string) {
 		ID: int64(7422140567),
 	}
 	b.Send(rec, message, telebot.Silent)
+}
+
+func notifyCashout(u *User, amount int64, tgid int64) {
+	username := u.Name
+	if len(u.Code) > 0 && u.Code != u.AddressWithdraw {
+		username = fmt.Sprintf("@%s", u.Code)
+	} else if u.Code == u.AddressWithdraw {
+		username = u.Name
+	}
+
+	createdAt := "unknown"
+	if !u.CreatedAt.IsZero() {
+		createdAt = u.CreatedAt.Format("Jan 2, 2006")
+	}
+
+	frenAmount := float64(u.TMU) / float64(Mul9)
+	compounds := u.CompoundCount
+	cashoutAmount := float64(amount) / float64(Mul9)
+	depositAddress := u.AddressDeposit
+	if len(depositAddress) == 0 {
+		depositAddress = u.AddressWithdraw
+	}
+	if len(depositAddress) == 0 {
+		depositAddress = "unknown"
+	}
+
+	msg := fmt.Sprintf(lCashOut, username, formatNumber(cashoutAmount), createdAt, u.CycleCountTotal, compounds, formatNumber(frenAmount), depositAddress, depositAddress)
+
+	rm := &telebot.ReplyMarkup{}
+	payURL := fmt.Sprintf("https://app.tonkeeper.com/transfer/%s?amount=%d", u.AddressWithdraw, amount)
+	payBtn := rm.URL("Pay", payURL)
+	doneBtn := rm.Data("Done", "done")
+	cancelBtn := rm.Data("Cancel", "cancel")
+
+	rm.Inline(
+		rm.Row(payBtn, doneBtn, cancelBtn),
+	)
+
+	rec := &telebot.Chat{ID: tgid}
+	_, err := b.Send(rec, msg, rm, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+}
+
+func notifyRestartInactive(msg string, tgid int64) {
+	rb := getRestartButton()
+	rec := &telebot.Chat{
+		ID: tgid,
+	}
+	_, err := b.Send(rec, msg, rb, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+}
+
+func notifyInactive() {
+	var users []*User
+	if err := db.Find(&users).Error; err != nil {
+		loge(err)
+		return
+	}
+
+	for _, u := range users {
+		time.Sleep(time.Second)
+		if u.isActive() || u.BotBlocked {
+			continue
+		}
+		notifyRestartInactive(lPayoutsEnabled, u.TelegramId)
+		notify(fmt.Sprintf("User %s is inactive, sent restart notification.", u.Name), Frenly)
+	}
 }

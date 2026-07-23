@@ -1,6 +1,6 @@
 module frenly
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/go-macaron/binding v1.2.0
@@ -8,7 +8,7 @@ require (
 	github.com/go-macaron/csrf v0.0.0-20200329073418-5d38f39de352
 	github.com/go-macaron/session v1.0.4
 	github.com/tonkeeper/tongo v1.11.1
-	github.com/xssnick/tonutils-go v1.17.2
+	github.com/xssnick/tonutils-go v1.18.0
 	golang.org/x/exp v0.0.0-20260709172345-9ea1abe57597
 	gopkg.in/macaron.v1 v1.5.1
 	gopkg.in/telebot.v3 v3.3.8

@@ -11,6 +11,10 @@ func commandCallback(c telebot.Context) error {
 
 	if d == "compound" {
 		return commandCompound(c)
+	} else if d == "done" {
+		return commandDone(c)
+	} else if d == "cancel" {
+		return commandCancel(c)
 	} else if strings.HasPrefix(d, "t.me/FrenlyRobot") {
 		p := strings.Replace(d, "t.me/FrenlyRobot?start=", "", -1)
 		return commandBoost(c, p, false)
