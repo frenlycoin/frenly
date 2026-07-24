@@ -28,7 +28,7 @@ const (
 	News = int64(-1001717915246)
 
 	// Telegram channel ID for development news updates.
-	NewsDev = int64(-1002261097117)
+	NewsDev = int64(-1002557052681)
 
 	// Telegram channel ID for test news updates.
 	NewsTest = int64(-1002478203272)
