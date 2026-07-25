@@ -146,6 +146,8 @@ Compounds: %d
 FRENs Balance: %s
 FRENs Rewards: %s
 Health: %d%%
+Referral Health: %.0f%%
+Referral Count: %d
 
 Deposit Address: <a href="https://tonscan.org/address/%s">%s</a>
 Withdraw Address: <a href="https://tonscan.org/address/%s">%s</a>`

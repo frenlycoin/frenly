@@ -225,8 +225,13 @@ func (u *User) processTmuPayments() bool {
 func (u *User) getUnboosted() []*BoostItem {
 	var ub []*BoostItem
 
+	since := u.MiningTime
+	if time.Since(since) > 48*time.Hour {
+		since = time.Now().Add(-48 * time.Hour)
+	}
+
 	var posts []*Post
-	db.Where("created_at > ?", time.Now().Add(time.Hour*(-48))).Find(&posts)
+	db.Where("created_at > ?", since).Find(&posts)
 
 	var boosts []*Boost
 	db.Where("user_id = ?", u.ID).Find(&boosts)

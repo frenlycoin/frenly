@@ -47,6 +47,9 @@ func commandUserInfo(c telebot.Context) error {
 	rewardsAmount := float64(u.rewards(true)) / float64(Mul9)
 	compounds := u.CompoundCount
 	health := u.health()
+	refHealth := u.healthRef() * 100
+	var refCount int64
+	db.Model(&User{}).Where("referrer_id = ?", u.ID).Count(&refCount)
 	depositAddress := u.AddressDeposit
 	if len(depositAddress) == 0 {
 		depositAddress = u.AddressWithdraw
@@ -60,7 +63,7 @@ func commandUserInfo(c telebot.Context) error {
 		withdrawAddress = "unknown"
 	}
 
-	msg := fmt.Sprintf(lUserInfo, u.Name, username, createdAt, u.CycleCountTotal, compounds, formatNumber(frenAmount), formatNumber(rewardsAmount), health, depositAddress, depositAddress, withdrawAddress, withdrawAddress)
+	msg := fmt.Sprintf(lUserInfo, u.Name, username, createdAt, u.CycleCountTotal, compounds, formatNumber(frenAmount), formatNumber(rewardsAmount), health, refHealth, refCount, depositAddress, depositAddress, withdrawAddress, withdrawAddress)
 
 	// Send the message to the private chat
 	err := c.Send(msg, telebot.NoPreview)
