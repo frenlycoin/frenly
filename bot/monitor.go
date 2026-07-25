@@ -34,7 +34,7 @@ func (m *Monitor) isSending(miner *User) bool {
 	if miner.ID != 0 &&
 		time.Since(miner.MiningTime).Minutes() > 1410 &&
 		time.Since(miner.MiningTime).Minutes() < 1440 &&
-		miner.LastNotification.Day() != time.Now().Day() &&
+		miner.LastNotification.Before(miner.MiningTime.Add(1410*time.Minute)) &&
 		miner.TelegramId != 0 {
 
 		miner.LastNotification = time.Now()
