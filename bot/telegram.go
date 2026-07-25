@@ -34,6 +34,27 @@ func initTelegram(key string) *telebot.Bot {
 	return b
 }
 
+func getRobotName() string {
+	if conf.Dev {
+		return "DevFrenlyRobot"
+	}
+	return "FrenlyRobot"
+}
+
+func getNewsName() string {
+	if conf.Dev {
+		return "DevFrenlyNews"
+	}
+	return "FrenlyNews"
+}
+
+func getCoinName() string {
+	if conf.Dev {
+		return "DevFrenlyCoin"
+	}
+	return "FrenlyCoin"
+}
+
 func notify(msg string, tgid int64) {
 	rec := &telebot.Chat{
 		ID: tgid,
@@ -81,7 +102,7 @@ func notifystart(msg string, tgid int64) {
 
 func getRestartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("⚪️ Restart Mining", "https://t.me/FrenlyRobot?start=restart")
+	btn := rm.URL("⚪️ Restart Mining", fmt.Sprintf("https://t.me/%s?start=restart", getRobotName()))
 
 	rm.Inline(
 		rm.Row(btn),
@@ -93,7 +114,7 @@ func getRestartButton() *telebot.ReplyMarkup {
 func getRestartButtonChannel() *telebot.ReplyMarkup {
 	kv := &KeyValue{Key: "restartPostId"}
 	db.FirstOrCreate(kv, kv)
-	link := fmt.Sprintf("https://t.me/FrenlyNews/%d", kv.ValueInt)
+	link := fmt.Sprintf("https://t.me/%s/%d", getNewsName(), kv.ValueInt)
 
 	rm := &telebot.ReplyMarkup{}
 	btn := rm.URL("⚪️ Restart Mining", link)
@@ -106,7 +127,7 @@ func getRestartButtonChannel() *telebot.ReplyMarkup {
 }
 
 func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
-	link := "https://t.me/FrenlyRobot?start=restart"
+	link := fmt.Sprintf("https://t.me/%s?start=restart", getRobotName())
 
 	rm := &telebot.ReplyMarkup{}
 	btn1 := rm.URL("Boost Miner", boostLink)
@@ -122,7 +143,7 @@ func getRestartButtonBoost(boostLink string) *telebot.ReplyMarkup {
 
 func getStartButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("Start Mining Now 🚀", "t.me/FrenlyRobot")
+	btn := rm.URL("Start Mining Now 🚀", fmt.Sprintf("t.me/%s", getRobotName()))
 
 	rm.Inline(
 		rm.Row(btn),
@@ -133,8 +154,7 @@ func getStartButton() *telebot.ReplyMarkup {
 
 func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("t.me/FrenlyRobot?start=%s", boostId))
-	// btn2 := rm.URL("New User", "t.me/FrenlyRobot")
+	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId))
 
 	rm.Inline(
 		rm.Row(btn1),
@@ -145,7 +165,7 @@ func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 
 func getClaimButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn := rm.URL("Claim The Reward 🚀", "t.me/FrenlyRobot?start=claim")
+	btn := rm.URL("Claim The Reward 🚀", fmt.Sprintf("t.me/%s?start=claim", getRobotName()))
 
 	rm.Inline(
 		rm.Row(btn),
@@ -225,7 +245,7 @@ func notifyPrize(u *User) *telebot.Message {
 	}
 
 	recGroup := &telebot.Chat{
-		ID: Group,
+		ID: getGroup(),
 	}
 
 	mc, err := b.Send(rec, msg, telebot.NoPreview)
@@ -242,7 +262,7 @@ func notifyPrize(u *User) *telebot.Message {
 		loge(err)
 	}
 
-	gb := getGroupButton(fmt.Sprintf("https://t.me/FrenlyCoin/%d", mg.ID))
+	gb := getGroupButton(fmt.Sprintf("https://t.me/%s/%d", getCoinName(), mg.ID))
 
 	_, err = b.Edit(mc, gb)
 	if err != nil {

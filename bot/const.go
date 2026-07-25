@@ -16,7 +16,8 @@ const (
 	// Telegram group ID for the main Frenly community group.
 	Group = int64(-1002257590502)
 
-	// Alternate group ID used for the hall channel.
+	GroupDev = int64(-1002375040061)
+
 	// GroupHall = int64(-1002405271136)
 	GroupHall = int64(-1002273131265)
 
@@ -27,7 +28,7 @@ const (
 	News = int64(-1001717915246)
 
 	// Telegram channel ID for development news updates.
-	NewsDev = int64(-1002261097117)
+	NewsDev = int64(-1002557052681)
 
 	// Telegram channel ID for test news updates.
 	NewsTest = int64(-1002478203272)

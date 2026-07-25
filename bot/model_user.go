@@ -25,7 +25,6 @@ type User struct {
 	ReferrerID       *uint
 	Referrer         *User
 	Name             string `gorm:"size:255"`
-	ReferralActive   bool   `gorm:"default:false"`
 	CompoundCount    uint64
 	CycleCount       uint64
 	CycleCountTotal  uint64
@@ -34,6 +33,7 @@ type User struct {
 	LastTxLT         uint64    `gorm:"default:0"`
 	LastTxHash       string    `gorm:"default:''"`
 	BotBlocked       bool      `gorm:"default:false"`
+	LastReminder     time.Time `gorm:"default:'2024-12-03 16:00:00.390330053+01:00'"`
 	Boosts           []*Post   `gorm:"many2many:boosts;"`
 }
 
@@ -61,7 +61,9 @@ func (u *User) rewards(checkFollow bool) uint64 {
 	// log.Printf("health index: %s %.9f", u.Name, healthIndex)
 
 	r = uint64(float64(r) * cycleIndex * healthIndex)
-	// r = uint64(float64(r) * cycleIndex)
+
+	referralBonus := 1.0 + u.healthRef()
+	r = uint64(float64(r) * referralBonus)
 
 	return r
 }
@@ -100,7 +102,15 @@ func (u *User) isFollower() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(News)
+	var channel int64
+
+	if conf.Dev {
+		channel = NewsDev
+	} else {
+		channel = News
+	}
+
+	cb, err := b.ChatByID(channel)
 	if err != nil {
 		// loge(err)
 		return false
@@ -128,7 +138,7 @@ func (u *User) isMember() bool {
 		return false
 	}
 
-	cb, err := b.ChatByID(Group)
+	cb, err := b.ChatByID(getGroup())
 	if err != nil {
 		loge(err)
 		return false
@@ -161,6 +171,7 @@ func (u *User) hasMigrated() bool {
 }
 
 func (u *User) isActive() bool {
+	// log.Println(u.MiningTime)
 	return time.Since(u.MiningTime).Minutes() <= 2280
 }
 
@@ -211,16 +222,21 @@ func (u *User) processTmuPayments() bool {
 	return false
 }
 
-func (u *User) getUnboosted() []*Boost {
-	var ub []*Boost
+func (u *User) getUnboosted() []*BoostItem {
+	var ub []*BoostItem
 
 	var posts []*Post
-	db.Where("created_at > ?", u.MiningTime).Find(&posts)
+	db.Where("created_at > ?", time.Now().Add(time.Hour*(-48))).Find(&posts)
+
+	var boosts []*Boost
+	db.Where("user_id = ?", u.ID).Find(&boosts)
+
+	log.Println(len(boosts))
 
 	for _, p := range posts {
 		skip := false
-		for _, b := range u.Boosts {
-			if b.ID == p.ID {
+		for _, b := range boosts {
+			if uint(b.PostID) == p.ID {
 				skip = true
 			}
 		}
@@ -231,7 +247,7 @@ func (u *User) getUnboosted() []*Boost {
 
 		if !skip {
 			c := getChannel(int(p.ChannelId))
-			b := &Boost{
+			b := &BoostItem{
 				Name: c.Name,
 				Link: "t.me/" + c.Link + fmt.Sprintf("/%d", p.TelegramId),
 			}
@@ -242,6 +258,21 @@ func (u *User) getUnboosted() []*Boost {
 	return ub
 }
 
+func (u *User) healthRef() float64 {
+	var count int64
+	activeSince := time.Now().Add(time.Minute * -2280)
+	db.Model(&User{}).Where("referrer_id = ? AND mining_time > ?", u.ID, activeSince).Count(&count)
+
+	if count >= 3 {
+		return 1.0
+	} else if count == 2 {
+		return 0.66
+	} else if count == 1 {
+		return 0.33
+	}
+	return 0.0
+}
+
 func (u *User) health() int64 {
 	health := int64(0)
 
@@ -249,8 +280,13 @@ func (u *User) health() int64 {
 		return health
 	}
 
-	bt := getBoostTasks(u.MiningTime)
+	bt := getBoostTasks(u.MiningTime.Add(time.Hour * (-48)))
+
+	log.Println(len(bt))
+
 	ub := u.getUnboosted()
+
+	log.Println(len(ub))
 
 	if len(bt) == 0 || len(ub) == 0 {
 		return 100
@@ -293,7 +329,7 @@ func getUserOrCreate(c telebot.Context) (*User, error) {
 		loge(res.Error)
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
-		notify(lNewUser, Group)
+		notify(lNewUser, getGroup())
 		cch.loadStatsCache()
 	}
 
@@ -349,7 +385,7 @@ func getUserOrCreate2(tgid int64, code string, name string) (*User, error) {
 		loge(res.Error)
 		return u, res.Error
 	} else if res.RowsAffected > 0 {
-		notify(lNewUser, Group)
+		notify(lNewUser, getGroup())
 		cch.loadStatsCache()
 	}
 
@@ -380,6 +416,14 @@ func getUserByCode(code string) *User {
 }
 
 func getUser(tgid int64) *User {
+	u := &User{}
+
+	db.Preload("Referrer").First(u, &User{TelegramId: tgid})
+
+	return u
+}
+
+func getUserWithBoosts(tgid int64) *User {
 	u := &User{}
 
 	db.Preload("Referrer").Preload("Boosts").First(u, &User{TelegramId: tgid})

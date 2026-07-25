@@ -36,6 +36,7 @@ func viewData(ctx *macaron.Context) {
 			}
 
 			dr.Code = u.Code
+			dr.Username = u.Code
 			dr.AddressDeposit = u.AddressDeposit
 			dr.AddressWithdraw = u.AddressWithdraw
 			dr.TMU = float64(u.TMU) / float64(Mul9)
@@ -49,10 +50,26 @@ func viewData(ctx *macaron.Context) {
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
 			dr.IsMember = u.isMember()
+			dr.Dev = conf.Dev
 			dr.CycleCount = u.CycleCount
 			dr.MiningTime = u.MiningTime
 			dr.Health = u.health()
 			dr.Boosts = u.getUnboosted()
+
+			var refUsers []*User
+			db.Where("referrer_id = ?", u.ID).Find(&refUsers)
+			dr.ReferralCount = int64(len(refUsers))
+			hf := u.healthRef()
+			dr.ReferralBonus = hf
+			dr.HealthRef = hf
+			for _, ru := range refUsers {
+				dr.ReferredUsers = append(dr.ReferredUsers, &ReferredUser{
+					Name:     ru.Name,
+					Code:     ru.Code,
+					Username: ru.Code,
+					IsActive: ru.isActive(),
+				})
+			}
 		}
 	}
 
@@ -62,24 +79,37 @@ func viewData(ctx *macaron.Context) {
 }
 
 type DataResponse struct {
-	Earnings        float64    `json:"earnings"`
-	TMU             float64    `json:"tmu"`
-	Code            string     `json:"code"`
-	AddressDeposit  string     `json:"addr_deposit"`
-	AddressWithdraw string     `json:"addr_withdraw"`
-	LastUpdated     time.Time  `json:"last_updated"`
-	TimeLock        *time.Time `json:"time_lock"`
-	IsFollower      bool       `json:"is_follower"`
-	IsMember        bool       `json:"is_member"`
-	CycleActive     bool       `json:"cycle_active"`
-	CycleCount      uint64     `json:"cycle_count"`
-	MiningTime      time.Time  `json:"mining_time"`
-	Health          int64      `json:"health"`
-	Boosts          []*Boost   `json:"boosts"`
-	Price           int64      `json:"price"`
+	Earnings        float64         `json:"earnings"`
+	TMU             float64         `json:"tmu"`
+	Code            string          `json:"code"`
+	Username        string          `json:"username"`
+	AddressDeposit  string          `json:"addr_deposit"`
+	AddressWithdraw string          `json:"addr_withdraw"`
+	LastUpdated     time.Time       `json:"last_updated"`
+	TimeLock        *time.Time      `json:"time_lock"`
+	IsFollower      bool            `json:"is_follower"`
+	IsMember        bool            `json:"is_member"`
+	Dev             bool            `json:"dev"`
+	CycleActive     bool            `json:"cycle_active"`
+	CycleCount      uint64          `json:"cycle_count"`
+	MiningTime      time.Time       `json:"mining_time"`
+	Health          int64           `json:"health"`
+	Boosts          []*BoostItem    `json:"boosts"`
+	Price           int64           `json:"price"`
+	ReferralCount   int64           `json:"referral_count"`
+	ReferralBonus   float64         `json:"referral_bonus"`
+	HealthRef       float64         `json:"health_ref"`
+	ReferredUsers   []*ReferredUser `json:"referred_users"`
 }
 
-type Boost struct {
+type ReferredUser struct {
+	Name     string `json:"name"`
+	Code     string `json:"code"`
+	Username string `json:"username"`
+	IsActive bool   `json:"is_active"`
+}
+
+type BoostItem struct {
 	Name string `json:"name"`
 	Link string `json:"link"`
 }

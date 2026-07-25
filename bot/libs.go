@@ -71,6 +71,13 @@ func prettyPrint(i interface{}) string {
 	return string(s)
 }
 
+func getGroup() int64 {
+	if conf.Dev {
+		return GroupDev
+	}
+	return Group
+}
+
 func formatNumber(n float64) string {
 	return formatNumberWithPrecision(n, 9)
 }
