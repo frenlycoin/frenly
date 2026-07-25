@@ -25,7 +25,6 @@ type User struct {
 	ReferrerID       *uint
 	Referrer         *User
 	Name             string `gorm:"size:255"`
-	ReferralActive   bool   `gorm:"default:false"`
 	CompoundCount    uint64
 	CycleCount       uint64
 	CycleCountTotal  uint64
@@ -61,7 +60,9 @@ func (u *User) rewards(checkFollow bool) uint64 {
 	// log.Printf("health index: %s %.9f", u.Name, healthIndex)
 
 	r = uint64(float64(r) * cycleIndex * healthIndex)
-	// r = uint64(float64(r) * cycleIndex)
+
+	referralBonus := 1.0 + u.healthRef()
+	r = uint64(float64(r) * referralBonus)
 
 	return r
 }
@@ -254,6 +255,21 @@ func (u *User) getUnboosted() []*BoostItem {
 	}
 
 	return ub
+}
+
+func (u *User) healthRef() float64 {
+	var count int64
+	activeSince := time.Now().Add(time.Minute * -2280)
+	db.Model(&User{}).Where("referrer_id = ? AND mining_time > ?", u.ID, activeSince).Count(&count)
+
+	if count >= 3 {
+		return 1.0
+	} else if count == 2 {
+		return 0.66
+	} else if count == 1 {
+		return 0.33
+	}
+	return 0.0
 }
 
 func (u *User) health() int64 {
