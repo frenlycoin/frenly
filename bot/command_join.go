@@ -15,13 +15,13 @@ func commandJoin(c telebot.Context) error {
 Here are some resources to get you started.
 
 Short Explanation:
-https://t.me/FrenlyNews/105
+https://t.me/%s/105
 
 Mining Tutorial:
-https://t.me/FrenlyNews/106
+https://t.me/%s/106
 
 About Frenly App:
-https://t.me/FrenlyNews/8`, c.Message().Sender.FirstName)
+https://t.me/%s/8`, c.Message().Sender.FirstName, getNewsName(), getNewsName(), getNewsName())
 
 	m, err := b.Send(c.Chat(), msg, telebot.NoPreview)
 

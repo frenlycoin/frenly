@@ -51,7 +51,7 @@ func (pm *PrizeManager) executeLosers() {
 
 	for ui := range l {
 		lu := pm.InactiveMiners[ui]
-		msg := fmt.Sprintf(lNotWon, fmt.Sprintf("t.me/FrenlyNews/%d", pm.WinMsg.ID))
+		msg := fmt.Sprintf(lNotWon, getCoinName(), fmt.Sprintf("t.me/%s/%d", getNewsName(), pm.WinMsg.ID))
 		log.Println(msg)
 		notify(msg, lu.TelegramId)
 		log.Printf("Loser: %s", lu.Name)

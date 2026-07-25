@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -66,8 +67,8 @@ func commandStart(c telebot.Context) error {
 
 func getAppButton() *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
-	btn1 := rm.URL("Subscribe", "https://t.me/FrenlyNews")
-	btn2 := rm.URL("Start Mining", "https://t.me/FrenlyRobot/miner")
+	btn1 := rm.URL("Subscribe", fmt.Sprintf("https://t.me/%s", getNewsName()))
+	btn2 := rm.URL("Start Mining", fmt.Sprintf("https://t.me/%s/miner", getRobotName()))
 
 	rm.Inline(
 		rm.Row(btn1, btn2),
@@ -80,7 +81,7 @@ func getRestartButtons(c telebot.Context) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 
 	btn1 := rm.Data("Compound", "compound")
-	btn2 := rm.URL("Launch App", "https://t.me/FrenlyRobot/miner")
+	btn2 := rm.URL("Launch App", fmt.Sprintf("https://t.me/%s/miner", getRobotName()))
 
 	rm.Inline(
 		rm.Row(btn1, btn2),

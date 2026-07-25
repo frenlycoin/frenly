@@ -33,6 +33,7 @@ type User struct {
 	LastTxLT         uint64    `gorm:"default:0"`
 	LastTxHash       string    `gorm:"default:''"`
 	BotBlocked       bool      `gorm:"default:false"`
+	LastReminder     time.Time `gorm:"default:'2024-12-03 16:00:00.390330053+01:00'"`
 	Boosts           []*Post   `gorm:"many2many:boosts;"`
 }
 

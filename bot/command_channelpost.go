@@ -31,7 +31,7 @@ func commandChannelPost(c telebot.Context) error {
 			return err
 		}
 
-		link := fmt.Sprintf("t.me/FrenlyRobot?start=b-%d", p.ID)
+		link := fmt.Sprintf("t.me/%s?start=b-%d", getRobotName(), p.ID)
 		bb := fmt.Sprintf("b-%d", p.ID)
 
 		if len(c.Message().AlbumID) > 0 && ch.Type != TypePost {

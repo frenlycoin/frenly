@@ -36,6 +36,7 @@ func viewData(ctx *macaron.Context) {
 			}
 
 			dr.Code = u.Code
+			dr.Username = u.Code
 			dr.AddressDeposit = u.AddressDeposit
 			dr.AddressWithdraw = u.AddressWithdraw
 			dr.TMU = float64(u.TMU) / float64(Mul9)
@@ -49,6 +50,7 @@ func viewData(ctx *macaron.Context) {
 			dr.TimeLock = u.TimeLock
 			dr.IsFollower = u.isFollower()
 			dr.IsMember = u.isMember()
+			dr.Dev = conf.Dev
 			dr.CycleCount = u.CycleCount
 			dr.MiningTime = u.MiningTime
 			dr.Health = u.health()
@@ -64,6 +66,7 @@ func viewData(ctx *macaron.Context) {
 				dr.ReferredUsers = append(dr.ReferredUsers, &ReferredUser{
 					Name:     ru.Name,
 					Code:     ru.Code,
+					Username: ru.Code,
 					IsActive: ru.isActive(),
 				})
 			}
@@ -79,12 +82,14 @@ type DataResponse struct {
 	Earnings        float64         `json:"earnings"`
 	TMU             float64         `json:"tmu"`
 	Code            string          `json:"code"`
+	Username        string          `json:"username"`
 	AddressDeposit  string          `json:"addr_deposit"`
 	AddressWithdraw string          `json:"addr_withdraw"`
 	LastUpdated     time.Time       `json:"last_updated"`
 	TimeLock        *time.Time      `json:"time_lock"`
 	IsFollower      bool            `json:"is_follower"`
 	IsMember        bool            `json:"is_member"`
+	Dev             bool            `json:"dev"`
 	CycleActive     bool            `json:"cycle_active"`
 	CycleCount      uint64          `json:"cycle_count"`
 	MiningTime      time.Time       `json:"mining_time"`
@@ -100,6 +105,7 @@ type DataResponse struct {
 type ReferredUser struct {
 	Name     string `json:"name"`
 	Code     string `json:"code"`
+	Username string `json:"username"`
 	IsActive bool   `json:"is_active"`
 }
 
