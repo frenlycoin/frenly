@@ -37,60 +37,54 @@ func viewRemind(ctx *macaron.Context) {
 	var refUsers []*User
 	db.Where("referrer_id = ?", u.ID).Find(&refUsers)
 
-	sent := 0
-	for _, ru := range refUsers {
-		if ru.isActive() || ru.BotBlocked {
-			continue
-		}
-
-		weeklyFREN := uint64(float64(ru.TMU) * 604800 / (2400 * 3600))
-		weeklyFRENFormatted := formatNumber(float64(weeklyFREN) / float64(Mul9))
-
-		senderName := u.Name
-		if u.Code != "" {
-			senderName = "@" + u.Code
-		}
-
-		priceKv := &KeyValue{Key: "dexLastPrice"}
-		if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err == nil && priceKv.ValueInt > 0 {
-			price := float64(priceKv.ValueInt) / float64(Mul9)
-			tonValue := (float64(weeklyFREN) / float64(Mul9)) * price
-			msg := fmt.Sprintf(
-				"🔵 <b><u>Your miner is inactive!</u></b>\n\n"+
-					"You are losing <b>%s FREN (%s GRAM)</b> every week by not mining!\n\n"+
-					"<i>This notification was sent by your referrer %s.</i>\n\n"+
-					"Restart your miner and compound your rewards to earn more.",
-				weeklyFRENFormatted,
-				formatNumber(tonValue),
-				senderName,
-			)
-			notifyRestartInactive(msg, ru.TelegramId)
-		} else {
-			msg := fmt.Sprintf(
-				"🔵 <b><u>Your miner is inactive!</u></b>\n\n"+
-					"You are losing <b>%s FREN</b> every week by not mining!\n\n"+
-					"<i>This notification was sent by your referrer %s.</i>\n\n"+
-					"Restart your miner and compound your rewards to earn more.",
-				weeklyFRENFormatted,
-				senderName,
-			)
-			notifyRestartInactive(msg, ru.TelegramId)
-		}
-
-		sent++
-	}
-
 	u.LastReminder = time.Now()
 	if err := db.Save(u).Error; err != nil {
 		loge(err)
 	}
 
-	if sent == 0 {
-		rr.Success = false
-		rr.ErrorMessage = "No inactive referred users to remind."
-		ctx.JSON(200, rr)
-		return
-	}
+	go func(u *User, refUsers []*User) {
+		senderName := u.Name
+		if u.Code != "" {
+			senderName = "@" + u.Code
+		}
+
+		for _, ru := range refUsers {
+			time.Sleep(time.Second)
+
+			if ru.isActive() || ru.BotBlocked {
+				continue
+			}
+
+			weeklyFREN := uint64(float64(ru.TMU) * 604800 / (2400 * 3600))
+			weeklyFRENFormatted := formatNumber(float64(weeklyFREN) / float64(Mul9))
+
+			priceKv := &KeyValue{Key: "dexLastPrice"}
+			if err := db.Where("key = ?", priceKv.Key).FirstOrCreate(priceKv).Error; err == nil && priceKv.ValueInt > 0 {
+				price := float64(priceKv.ValueInt) / float64(Mul9)
+				tonValue := (float64(weeklyFREN) / float64(Mul9)) * price
+				msg := fmt.Sprintf(
+					"🔵 <b><u>Your miner is inactive!</u></b>\n\n"+
+						"You are losing <b>%s FREN (%s GRAM)</b> every week by not mining!\n\n"+
+						"<i>This notification was sent by your referrer %s.</i>\n\n"+
+						"Restart your miner and compound your rewards to earn more.",
+					weeklyFRENFormatted,
+					formatNumber(tonValue),
+					senderName,
+				)
+				notifyRestartInactive(msg, ru.TelegramId)
+			} else {
+				msg := fmt.Sprintf(
+					"🔵 <b><u>Your miner is inactive!</u></b>\n\n"+
+						"You are losing <b>%s FREN</b> every week by not mining!\n\n"+
+						"<i>This notification was sent by your referrer %s.</i>\n\n"+
+						"Restart your miner and compound your rewards to earn more.",
+					weeklyFRENFormatted,
+					senderName,
+				)
+				notifyRestartInactive(msg, ru.TelegramId)
+			}
+		}
+	}(u, refUsers)
 
 	rr.Success = true
 	ctx.JSON(200, rr)
