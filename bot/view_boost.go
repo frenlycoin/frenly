@@ -4,7 +4,6 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"time"
 
 	"gopkg.in/macaron.v1"
 )
@@ -34,7 +33,7 @@ func viewBoost(ctx *macaron.Context) {
 			}
 
 			if !boosted {
-				u.MiningTime = time.Now()
+				// u.MiningTime = time.Now()
 				u.Boosts = nil
 				if err := db.Save(u).Error; err != nil {
 					loge(err)
