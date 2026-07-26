@@ -96,7 +96,7 @@ func (m *Monitor) start() {
 	for {
 		m.loadMiners()
 
-		// m.sendNotifications()
+		m.sendNotifications()
 
 		// log.Println("Monitor users loaded.")
 

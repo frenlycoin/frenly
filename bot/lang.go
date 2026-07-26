@@ -29,11 +29,9 @@ Every 24 hours, you need to restart your daily mining cycle and you will get not
 
 	lRestartMining = `🔵 <b><u>Mine More TON!</u></b> 🚀
 
-<b><u>Each referred miner increases your mining power by 25% of their FREN!</u></b>
+<b><u>Each referred miner increases your mining power by 33%!</u></b>
 
-Invite your friends to Frenly App and you will receive 25% of their FREN. You can find your referral link in the app.
-
-Click the button bellow to restart the daily mining cycle!`
+Invite 3 of your friends to Frenly App and get 100% mining power boost for your daily mining cycle. You can find your referral link in the app.`
 
 	lStartMining = `🔵 <b><u>Start Mining TON!</u></b> 🚀
 
@@ -148,6 +146,7 @@ FRENs Rewards: %s
 Health: %d%%
 Referral Health: %.0f%%
 Referral Count: %d
+Active Referrals: %d
 
 Deposit Address: <a href="https://tonscan.org/address/%s">%s</a>
 Withdraw Address: <a href="https://tonscan.org/address/%s">%s</a>`

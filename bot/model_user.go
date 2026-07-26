@@ -236,7 +236,7 @@ func (u *User) getUnboosted() []*BoostItem {
 	var boosts []*Boost
 	db.Where("user_id = ?", u.ID).Find(&boosts)
 
-	log.Println(len(boosts))
+	// log.Println(len(boosts))
 
 	for _, p := range posts {
 		skip := false
@@ -287,11 +287,11 @@ func (u *User) health() int64 {
 
 	bt := getBoostTasks(u.MiningTime.Add(time.Hour * (-48)))
 
-	log.Println(len(bt))
+	// log.Println(len(bt))
 
 	ub := u.getUnboosted()
 
-	log.Println(len(ub))
+	// log.Println(len(ub))
 
 	if len(bt) == 0 || len(ub) == 0 {
 		return 100

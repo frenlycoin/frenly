@@ -70,17 +70,37 @@ func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
 }
 
 func notifyRestart() {
-	// mb := getRestartButton()
 	rec := &telebot.Chat{
 		ID: News,
 	}
 
 	msg := lRestartMining
 
-	m, err := b.Send(rec, msg, telebot.Silent)
+	// Find or create a channel record for the News channel
+	ch := &Channel{}
+	db.Where(&Channel{TelegramId: News}).Attrs(
+		&Channel{
+			Name: getNewsName(),
+			Link: getNewsName(),
+			Type: TypePost,
+		}).FirstOrCreate(ch)
+
+	// Create a boost post for this restart notification
+	p := &Post{
+		ChannelId: ch.ID,
+	}
+	db.Create(p)
+
+	bb := fmt.Sprintf("b-%d", p.ID)
+	fb := getFrenlyButtons(bb)
+
+	m, err := b.Send(rec, msg, fb, telebot.Silent)
 	if err != nil {
 		loge(err)
 	}
+
+	p.TelegramId = m.ID
+	db.Save(p)
 
 	kv := &KeyValue{Key: "restartPostId"}
 	db.FirstOrCreate(kv, kv)
@@ -240,8 +260,17 @@ func notifyEnd(u *User) {
 		ID: u.TelegramId,
 	}
 
-	// Send with both the inline buttons and the persistent reply keyboard
-	_, err := b.Send(rec, msg, rb, getRestartReplyKeyboard(), telebot.NoPreview)
+	// Combine inline buttons (rb) and reply keyboard into a single ReplyMarkup
+	// to prevent the reply keyboard from overwriting the inline buttons
+	rk := getRestartReplyKeyboard()
+	combined := &telebot.ReplyMarkup{
+		InlineKeyboard:  rb.InlineKeyboard,
+		ReplyKeyboard:   rk.ReplyKeyboard,
+		ResizeKeyboard:  rk.ResizeKeyboard,
+		OneTimeKeyboard: rk.OneTimeKeyboard,
+	}
+
+	_, err := b.Send(rec, msg, combined, telebot.NoPreview)
 	if err != nil {
 		if strings.Contains(err.Error(), "blocked") {
 			u.BotBlocked = true
@@ -266,7 +295,36 @@ func notifyPrize(u *User) *telebot.Message {
 		ID: getGroup(),
 	}
 
+	// Find or create a channel record for the News channel
+	ch := &Channel{}
+	db.Where(&Channel{TelegramId: News}).Attrs(
+		&Channel{
+			Name: getNewsName(),
+			Link: getNewsName(),
+			Type: TypePost,
+		}).FirstOrCreate(ch)
+
+	// Create a boost post for this prize notification
+	p := &Post{
+		ChannelId: ch.ID,
+	}
+	db.Create(p)
+
+	bb := fmt.Sprintf("b-%d", p.ID)
+	fb := getFrenlyButtons(bb)
+
 	mc, err := b.Send(rec, msg, telebot.NoPreview)
+	if err != nil {
+		loge(err)
+	}
+
+	p.TelegramId = mc.ID
+	db.Save(p)
+
+	// Send boost button as a reply to the prize message
+	_, err = b.Send(rec, lBoost, fb, &telebot.SendOptions{
+		ReplyTo: mc,
+	})
 	if err != nil {
 		loge(err)
 	}

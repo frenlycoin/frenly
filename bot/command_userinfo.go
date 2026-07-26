@@ -3,6 +3,7 @@ package bot
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"gopkg.in/telebot.v3"
 )
@@ -50,6 +51,9 @@ func commandUserInfo(c telebot.Context) error {
 	refHealth := u.healthRef() * 100
 	var refCount int64
 	db.Model(&User{}).Where("referrer_id = ?", u.ID).Count(&refCount)
+	var activeRefCount int64
+	activeSince := time.Now().Add(time.Minute * -2280)
+	db.Model(&User{}).Where("referrer_id = ? AND mining_time > ?", u.ID, activeSince).Count(&activeRefCount)
 	depositAddress := u.AddressDeposit
 	if len(depositAddress) == 0 {
 		depositAddress = u.AddressWithdraw
@@ -63,7 +67,7 @@ func commandUserInfo(c telebot.Context) error {
 		withdrawAddress = "unknown"
 	}
 
-	msg := fmt.Sprintf(lUserInfo, u.Name, username, createdAt, u.CycleCountTotal, compounds, formatNumber(frenAmount), formatNumber(rewardsAmount), health, refHealth, refCount, depositAddress, depositAddress, withdrawAddress, withdrawAddress)
+	msg := fmt.Sprintf(lUserInfo, u.Name, username, createdAt, u.CycleCountTotal, compounds, formatNumber(frenAmount), formatNumber(rewardsAmount), health, refHealth, refCount, activeRefCount, depositAddress, depositAddress, withdrawAddress, withdrawAddress)
 
 	// Send the message to the private chat
 	err := c.Send(msg, telebot.NoPreview)
