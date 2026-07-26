@@ -19,7 +19,7 @@ func commandCompound(c telebot.Context) error {
 	frenAmount := formatNumber(float64(u.TMU) / float64(Mul9))
 	msg := fmt.Sprintf(lCompounded+"\n\n<b>Staked FREN:</b> <code>%s</code>", frenAmount)
 
-	b.Send(c.Sender(), msg, rb, getRestartReplyKeyboard())
+	b.Send(c.Sender(), msg, rb)
 
 	return nil
 }

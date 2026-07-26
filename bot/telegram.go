@@ -59,14 +59,14 @@ func notify(msg string, tgid int64) {
 	rec := &telebot.Chat{
 		ID: tgid,
 	}
-	b.Send(rec, msg, getRestartReplyKeyboard(), telebot.NoPreview)
+	b.Send(rec, msg, telebot.NoPreview)
 }
 
 func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
 	rec := &telebot.Chat{
 		ID: tgid,
 	}
-	b.Send(rec, msg, btn, getRestartReplyKeyboard(), telebot.NoPreview)
+	b.Send(rec, msg, btn, telebot.NoPreview)
 }
 
 func notifyRestart() {
@@ -114,7 +114,7 @@ func notifystart(msg string, tgid int64) {
 	rec := &telebot.Chat{
 		ID: tgid,
 	}
-	_, err := b.Send(rec, msg, sb, getRestartReplyKeyboard(), telebot.NoPreview)
+	_, err := b.Send(rec, msg, sb, telebot.NoPreview)
 	if err != nil {
 		loge(err)
 	}
@@ -174,7 +174,19 @@ func getStartButton() *telebot.ReplyMarkup {
 
 func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
+
 	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId))
+
+	// webApp := telebot.WebApp{URL: fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId)}
+
+	// btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://frenlytapp.aintchain.com/?startapp=%s", boostId))
+
+	// btn1 := rm. {Text: "Boost Frenly Miner 🚀", WebApp: &webApp}
+	// btn1 := rm.WebApp("Boost Frenly Miner 🚀", &telebot.WebApp{
+	// 	URL: fmt.Sprintf("https://frenlytapp.aintchain.com/?startapp=%s", boostId),
+	// })
+
+	// telebot.WebAppData{}
 
 	rm.Inline(
 		rm.Row(btn1),
@@ -228,23 +240,6 @@ func getButtonsBoost(name string, link string) *telebot.ReplyMarkup {
 	return rm
 }
 
-// getRestartReplyKeyboard returns a persistent Reply Keyboard (native Telegram keyboard at the bottom)
-// with two buttons in one row: Restart Mining (left) and Compound (right).
-func getRestartReplyKeyboard() *telebot.ReplyMarkup {
-	rm := &telebot.ReplyMarkup{}
-	rm.ResizeKeyboard = true
-	rm.OneTimeKeyboard = false
-
-	btn1 := rm.Text("⚪️ Restart Mining")
-	btn2 := rm.Text("🔄 Compound")
-
-	rm.Reply(
-		rm.Row(btn1, btn2),
-	)
-
-	return rm
-}
-
 func notifyEnd(u *User) {
 	var rb *telebot.ReplyMarkup
 	msg := lCycleFinished
@@ -260,17 +255,10 @@ func notifyEnd(u *User) {
 		ID: u.TelegramId,
 	}
 
-	// Combine inline buttons (rb) and reply keyboard into a single ReplyMarkup
-	// to prevent the reply keyboard from overwriting the inline buttons
-	rk := getRestartReplyKeyboard()
-	combined := &telebot.ReplyMarkup{
-		InlineKeyboard:  rb.InlineKeyboard,
-		ReplyKeyboard:   rk.ReplyKeyboard,
-		ResizeKeyboard:  rk.ResizeKeyboard,
-		OneTimeKeyboard: rk.OneTimeKeyboard,
-	}
+	// Send a separate message to force remove the cached native reply keyboard
+	b.Send(rec, "-", &telebot.ReplyMarkup{RemoveKeyboard: true}, telebot.Silent)
 
-	_, err := b.Send(rec, msg, combined, telebot.NoPreview)
+	_, err := b.Send(rec, msg, rb, telebot.NoPreview)
 	if err != nil {
 		if strings.Contains(err.Error(), "blocked") {
 			u.BotBlocked = true
@@ -419,7 +407,7 @@ func notifyCashout(u *User, amount int64, tgid int64) {
 	)
 
 	rec := &telebot.Chat{ID: tgid}
-	_, err := b.Send(rec, msg, rm, getRestartReplyKeyboard(), telebot.NoPreview)
+	_, err := b.Send(rec, msg, rm, telebot.NoPreview)
 	if err != nil {
 		loge(err)
 	}
@@ -430,7 +418,7 @@ func notifyRestartInactive(msg string, tgid int64) {
 	rec := &telebot.Chat{
 		ID: tgid,
 	}
-	_, err := b.Send(rec, msg, rb, getRestartReplyKeyboard(), telebot.NoPreview)
+	_, err := b.Send(rec, msg, rb, telebot.NoPreview)
 	if err != nil {
 		loge(err)
 	}

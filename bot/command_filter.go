@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"strings"
-	"time"
 
 	"gopkg.in/telebot.v3"
 	"mvdan.cc/xurls"
@@ -13,28 +12,6 @@ import (
 func commandFilter(c telebot.Context) error {
 	var err error
 	m := c.Message()
-
-	// Handle the persistent reply keyboard buttons
-	if m.Private() {
-		if m.Text == "⚪️ Restart Mining" {
-			u := getUser(c.Sender().ID)
-			rb := getRestartButtons(c)
-			if time.Since(u.MiningTime).Minutes() > 1410 {
-				u.MiningTime = time.Now()
-				u.LastNotification = time.Now()
-				u.CycleCount++
-				if err := db.Save(u).Error; err != nil {
-					loge(err)
-				}
-				b.Send(c.Sender(), lCycleRestarted, rb, getRestartReplyKeyboard(), telebot.NoPreview)
-			} else {
-				b.Send(c.Sender(), lCycleRunning, rb, getRestartReplyKeyboard(), telebot.NoPreview)
-			}
-			return nil
-		} else if m.Text == "🔄 Compound" {
-			return commandCompound(c)
-		}
-	}
 
 	// Call commandUserInfo if message is private and forwarded
 	if m.Private() && m.IsForwarded() {

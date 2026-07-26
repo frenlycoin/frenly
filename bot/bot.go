@@ -43,5 +43,8 @@ func Start() {
 
 	// go notifyInactive())
 
+	// u := getUser(Frenly)
+	// notifyEnd(u)
+
 	b.Start()
 }
