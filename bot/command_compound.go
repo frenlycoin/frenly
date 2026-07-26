@@ -1,6 +1,8 @@
 package bot
 
 import (
+	"fmt"
+
 	"gopkg.in/telebot.v3"
 )
 
@@ -14,7 +16,10 @@ func commandCompound(c telebot.Context) error {
 
 	rb := getRestartButtons(c)
 
-	b.Send(c.Sender(), lCompounded, rb)
+	frenAmount := formatNumber(float64(u.TMU) / float64(Mul9))
+	msg := fmt.Sprintf(lCompounded+"\n\n<b>Staked FREN:</b> <code>%s</code>", frenAmount)
+
+	b.Send(c.Sender(), msg, rb, getRestartReplyKeyboard())
 
 	return nil
 }

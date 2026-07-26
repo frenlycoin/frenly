@@ -15,7 +15,7 @@ func commandStart(c telebot.Context) error {
 	u := getUser(c.Sender().ID)
 	if u.ID == 0 || p == "" {
 		ab := getAppButton()
-		b.Send(c.Sender(), lStart, ab)
+		b.Send(c.Sender(), lStart, ab, getRestartReplyKeyboard())
 
 		u, err = getUserOrCreate(c)
 		if err != nil {
@@ -51,9 +51,9 @@ func commandStart(c telebot.Context) error {
 				if err := db.Save(u).Error; err != nil {
 					loge(err)
 				}
-				b.Send(c.Sender(), lCycleRestarted, rb)
+				b.Send(c.Sender(), lCycleRestarted, rb, getRestartReplyKeyboard())
 			} else {
-				b.Send(c.Sender(), lCycleRunning, rb)
+				b.Send(c.Sender(), lCycleRunning, rb, getRestartReplyKeyboard())
 			}
 		} else if p == "claim" {
 			commandClaim(c)
