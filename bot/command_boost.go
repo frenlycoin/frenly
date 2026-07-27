@@ -9,7 +9,7 @@ import (
 )
 
 func commandBoost(c telebot.Context, p string, bg bool) error {
-	u := getUser(c.Sender().ID)
+	u := getUserWithBoosts(c.Sender().ID)
 
 	pids := strings.Split(p, "-")[1]
 	pid, err := strconv.Atoi(pids)
