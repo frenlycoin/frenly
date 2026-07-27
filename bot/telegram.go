@@ -70,37 +70,17 @@ func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
 }
 
 func notifyRestart() {
+	// mb := getRestartButton()
 	rec := &telebot.Chat{
 		ID: News,
 	}
 
 	msg := lRestartMining
 
-	// Find or create a channel record for the News channel
-	ch := &Channel{}
-	db.Where(&Channel{TelegramId: News}).Attrs(
-		&Channel{
-			Name: getNewsName(),
-			Link: getNewsName(),
-			Type: TypePost,
-		}).FirstOrCreate(ch)
-
-	// Create a boost post for this restart notification
-	p := &Post{
-		ChannelId: ch.ID,
-	}
-	db.Create(p)
-
-	bb := fmt.Sprintf("b-%d", p.ID)
-	fb := getFrenlyButtons(bb)
-
-	m, err := b.Send(rec, msg, fb, telebot.Silent)
+	m, err := b.Send(rec, msg, telebot.Silent)
 	if err != nil {
 		loge(err)
 	}
-
-	p.TelegramId = m.ID
-	db.Save(p)
 
 	kv := &KeyValue{Key: "restartPostId"}
 	db.FirstOrCreate(kv, kv)
@@ -294,36 +274,7 @@ func notifyPrize(u *User) *telebot.Message {
 		ID: getGroup(),
 	}
 
-	// Find or create a channel record for the News channel
-	ch := &Channel{}
-	db.Where(&Channel{TelegramId: News}).Attrs(
-		&Channel{
-			Name: getNewsName(),
-			Link: getNewsName(),
-			Type: TypePost,
-		}).FirstOrCreate(ch)
-
-	// Create a boost post for this prize notification
-	p := &Post{
-		ChannelId: ch.ID,
-	}
-	db.Create(p)
-
-	bb := fmt.Sprintf("b-%d", p.ID)
-	fb := getFrenlyButtons(bb)
-
 	mc, err := b.Send(rec, msg, telebot.NoPreview)
-	if err != nil {
-		loge(err)
-	}
-
-	p.TelegramId = mc.ID
-	db.Save(p)
-
-	// Send boost button as a reply to the prize message
-	_, err = b.Send(rec, lBoost, fb, &telebot.SendOptions{
-		ReplyTo: mc,
-	})
 	if err != nil {
 		loge(err)
 	}

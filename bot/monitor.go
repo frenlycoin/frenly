@@ -98,11 +98,11 @@ func (m *Monitor) start() {
 
 		m.sendNotifications()
 
-		// log.Println("Monitor users loaded.")
+		log.Println("Monitor users loaded.")
 
-		// if m.isTriggeringChannelPost() {
-		// 	notifyRestart()
-		// }
+		if m.isTriggeringChannelPost() {
+			notifyRestart()
+		}
 
 		time.Sleep(time.Second * MonitorTick)
 	}
