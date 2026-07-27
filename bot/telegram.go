@@ -175,18 +175,29 @@ func getStartButton() *telebot.ReplyMarkup {
 func getFrenlyButtons(boostId string) *telebot.ReplyMarkup {
 	rm := &telebot.ReplyMarkup{}
 
-	btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId))
+	// btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId))
 
-	// webApp := telebot.WebApp{URL: fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId)}
+	// webApp := telebot.WebApp{URL: "https://frenlytapp.aintchain.com"}
 
 	// btn1 := rm.URL("Boost Frenly Miner 🚀", fmt.Sprintf("https://frenlytapp.aintchain.com/?startapp=%s", boostId))
 
-	// btn1 := rm. {Text: "Boost Frenly Miner 🚀", WebApp: &webApp}
+	// btn1 := rm.WebApp("Boost Frenly Miner 🚀", &webApp)
 	// btn1 := rm.WebApp("Boost Frenly Miner 🚀", &telebot.WebApp{
 	// 	URL: fmt.Sprintf("https://frenlytapp.aintchain.com/?startapp=%s", boostId),
 	// })
 
 	// telebot.WebAppData{}
+
+	// btn1 := telebot.Btn{
+	// 	Text: "Boost Frenly Miner 🚀",
+	// 	WebApp: &telebot.WebApp{
+	// 		URL: fmt.Sprintf("https://t.me/%s/miner?startapp=%s", getRobotName(), boostId),
+	// 	},
+	// }
+
+	log.Println(boostId)
+
+	btn1 := rm.Data("Boost Frenly Miner 🚀", boostId)
 
 	rm.Inline(
 		rm.Row(btn1),

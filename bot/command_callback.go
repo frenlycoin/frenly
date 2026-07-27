@@ -22,7 +22,7 @@ func commandCallback(c telebot.Context) error {
 	} else if strings.HasPrefix(d, "t.me/") {
 		return commandChannelDelete(c)
 	} else if strings.HasPrefix(d, "b-") {
-		return commandBoost(c, d, true)
+		return commandBoost(c, d, false)
 	}
 
 	return nil
