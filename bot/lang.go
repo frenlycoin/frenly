@@ -9,7 +9,7 @@ Every 24 hours, you need to restart your daily mining cycle and you will get not
 
 <b><u>Health percentage determines the percentage of reward you receive.</u></b>`
 
-	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user."
+	lNewRef = "🔵 <b><u>New Referred User!</u></b>\n\nYou have a new referred user. Open the app and check referral health."
 
 	lNewRefFREN = "🔵 <b><u>New Referral FREN!</u></b>\n\nYou have received %s new referral FREN."
 
