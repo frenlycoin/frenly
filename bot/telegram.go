@@ -70,14 +70,14 @@ func notifyWithButton(msg string, tgid int64, btn *telebot.ReplyMarkup) {
 }
 
 func notifyRestart() {
-	// mb := getRestartButton()
+	mb := getRestartButton()
 	rec := &telebot.Chat{
 		ID: News,
 	}
 
 	msg := lRestartMining
 
-	m, err := b.Send(rec, msg, telebot.Silent)
+	m, err := b.Send(rec, msg, mb, telebot.Silent)
 	if err != nil {
 		loge(err)
 	}
