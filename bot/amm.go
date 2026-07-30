@@ -206,6 +206,7 @@ func exchange(u *User) (amountOut float64, err error) {
 	}
 
 	// u.MiningTime = time.Now()
+	u.RewardsFren = 0
 	u.LastUpdated = time.Now()
 	u.CycleCountTotal += u.CycleCount
 	u.CycleCount = 1

@@ -35,13 +35,14 @@ type User struct {
 	BotBlocked       bool      `gorm:"default:false"`
 	LastReminder     time.Time `gorm:"default:'2024-12-03 16:00:00.390330053+01:00'"`
 	Boosts           []*Post   `gorm:"many2many:boosts;"`
+	RewardsFren      uint64
 }
 
 func (u *User) rewards(checkFollow bool) uint64 {
 	r := uint64(0)
 
 	if checkFollow && !u.isFollower() {
-		return r
+		return u.RewardsFren
 	}
 
 	r = uint64(time.Since(u.LastUpdated).Seconds() * float64(u.TMU) / (2400 * 3600))
@@ -65,11 +66,15 @@ func (u *User) rewards(checkFollow bool) uint64 {
 	referralBonus := 1.0 + u.healthRef()
 	r = uint64(float64(r) * referralBonus)
 
+	// Add accumulated RewardsFren from previous restart cycles
+	r += u.RewardsFren
+
 	return r
 }
 
 func (u *User) compound() {
 	u.TMU += u.rewards(true)
+	u.RewardsFren = 0
 	u.CompoundCount++
 	if u.CycleCount > 0 {
 		u.CycleCountTotal += (u.CycleCount - 1)

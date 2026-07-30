@@ -14,6 +14,9 @@ func viewRestart(ctx *macaron.Context) {
 		u := getUser(tgid)
 
 		if time.Since(u.MiningTime).Minutes() > 1410 {
+			// Add current cycle rewards to RewardsFren before resetting
+			u.RewardsFren += u.rewards(true)
+			u.LastUpdated = time.Now()
 			u.MiningTime = time.Now()
 			u.LastNotification = time.Now()
 			u.CycleCount++
